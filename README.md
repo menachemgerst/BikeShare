@@ -24,10 +24,10 @@ Rather than creating a marketing campaign that targets all-new customers, the fi
 there is a very good chance to convert casual riders into members. 
 
 ### Analysis Goals
-1. To identify the differences between the types of riders membership - casual vs. member
-2. To identify the high and low usage of the bikes during the day, week and year
-3. To identify the popular (and not popular) stations and riding ereas
-Answering these three questions can help build a new stratgy fo convert casual to members riders
+1. To identify the differences between the types of riders membership - casual vs. annual
+2. To identify the high and low usage of the bikes during the day, week and year (including differences between membership)
+3. To identify the popular (and not popular) stations and riding ereas (including differences between membership)
+Answering these three questions can help build a new stratgy fo convert casual to annual riders
 
 ### The Data
 The data contains all the rides recorded in 12 month. the data of each use of a bike is recorderd and stored in the DWH. 
