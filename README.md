@@ -60,4 +60,17 @@ the query shows us that not all the columns in the db have the same data type an
 
 2. data altering
 	the columns withdiffernet data types are - end_station_id: nvarchar/float, start_station_id: nvarchar/float
-	the stations ID's are mostly numbers, but in some month stored althogh letters, there for we will alter all stations ID's into nvarchar and not into float 
+	the stations ID's are mostly numbers, but in some month stored also with letters, there for we will alter all stations ID's into NVARCHAR and not into FLOAT
+	(also cheack to see if it is possibale to change station ID's with existing FLOAT ID's using this query:
+	
+		SELECT * FROM
+		(
+			SELECT	 end_station_name
+				,end_station_id
+				,COUNT(DISTINCT end_station_name) AS 'station'
+			FROM trips202106
+			GROUP BY end_station_name ,end_station_id
+		) AS tbl
+		 WHERE station > 1
+	
+	)
