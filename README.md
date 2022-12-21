@@ -73,4 +73,4 @@ the query shows us that not all the columns in the db have the same data type an
 		) AS tbl
 		 WHERE station > 1
 	
-	)
+	sinch the quey returned zero rows we can understand that stations ID's with letters or distinctandcan't be replaced with existing FLOAT ID's)
