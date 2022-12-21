@@ -55,20 +55,20 @@ In further analysis will analyze longer time periods and try to identify and pre
 		AS TBL
 		PIVOT (COUNT(table_name) FOR data_type IN ([nvarchar],[float],[datetime]))AS PVT
 
-		column_name		nvarchar float	datetime
-		end_lat			0	  12	  0
-		end_lng			0	  12	  0
-		end_station_id		6	  6	  0
-		end_station_name	12	  0	  0
-		ended_at		0	  0	  12
-		member_casual		12	  0	  0
-		ride_id			12	  0	  0
-		rideable_type		12	  0	  0
-		start_lat		0	  12	  0
-		start_lng		0	  12	  0
-		start_station_id	3	  9	  0
-		start_station_name	12	  0	  0
-		started_at		0	  0	 12
+		column_name	nvarchar	float	datetime
+		end_lat	0	12	0
+		end_lng	0	12	0
+		end_station_id	6	6	0
+		end_station_name	12	0	0
+		ended_at	0	0	12
+		member_casual	12	0	0
+		ride_id	12	0	0
+		rideable_type	12	0	0
+		start_lat	0	12	0
+		start_lng	0	12	0
+		start_station_id	3	9	0
+		start_station_name	12	0	0
+		started_at	0	0	12
 
 
 the query shows us that not all the columns in the db have the same data type and they need to be altered inorder to ba able to inserted into one main table
