@@ -39,20 +39,18 @@ In further analysis will analyze longer time periods and try to identify and pre
 ### Data modifying and cleaning
 
 1. what is in the date?
-	query for the tables and data types in the db:
+	query for the tables and data types in the db(using a pivot table to identify same column with different data types):
 
-		SELECT	schema_name(tab.schema_id) as schema_name
-				,tab.name as table_name
-				,col.column_id
-				,col.name as column_name
-				,t.name as data_type    
-				,col.max_length
-				,col.precision
-		FROM sys.tables as tab
-		INNER JOIN sys.columns as col
-		ON tab.object_id = col.object_id
-		LEFT JOIN sys.types as t
-		ON col.user_type_id = t.user_type_id
-		ORDER BY schema_name
-			,table_name 
-			,column_id;
+		SELECT *
+		FROM 
+		(	SELECT	 tab.name as table_name
+ 			,col.name as column_name
+ 			,t.name as data_type    
+			FROM sys.tables as tab
+			INNER JOIN sys.columns as col
+			ON tab.object_id = col.object_id
+			LEFT JOIN sys.types as t
+			ON col.user_type_id = t.user_type_id
+		)
+		AS TBL
+		PIVOT (COUNT(table_name) FOR data_type IN ([nvarchar],[float],[datetime]))AS PVT
