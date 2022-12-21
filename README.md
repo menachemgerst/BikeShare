@@ -55,7 +55,7 @@ In further analysis will analyze longer time periods and try to identify and pre
 		AS TBL
 		PIVOT (COUNT(table_name) FOR data_type IN ([nvarchar],[float],[datetime]))AS PVT
 
-		column_name	nvarchar	float	datetime
+		column_name		nvarchar	float	datetime
 		end_lat		0	12	0
 		end_lng		0	12	0
 		end_station_id	6	6	0
