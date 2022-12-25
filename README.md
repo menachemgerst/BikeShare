@@ -119,6 +119,7 @@ and for altering end_station_id data type to all be the same (varchar):
 			
 		
 	b. rides that didn't happen (or bad data was collocted)
+	
 		WITH CTE AS
 		(
 			 SELECT  *,
