@@ -106,7 +106,8 @@ and for altering end_station_id data type to all be the same (varchar):
 
 3. Omitted data from the analysis
 		
-	the following data is irelevant for the analysis and will not be insrted into the main table for analysis
+	the following data is irrelevant for the analysis and will not be insrted into the main table for analysis
+	
 	a. test rides
 	
 		SELECT *
@@ -118,7 +119,18 @@ and for altering end_station_id data type to all be the same (varchar):
 			
 		
 	b. rides that didn't happen (or bad data was collocted)
-	
+		WITH CTE AS
+		(
+			 SELECT  *,
+			 CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
+			      WHEN ended_at < started_at THEN 2
+				 ELSE 0 
+			 END AS 'no_ride_code'
+			 FROM trips202007
+     		 )
+		  SELECT *
+		  FROM CTE
+		  WHERE no_ride_code > 0
 		
 	
 4. Inserting all tabels into one main table
