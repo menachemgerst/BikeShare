@@ -59,7 +59,7 @@ In further analysis will analyze longer time periods and try to identify and pre
 the query shows us that not all the columns in the db have the same data type and they need to be altered inorder to ba able to inserte all the tables into one main table.
 
 2. data altering
-	the columns withdiffernet data types are - end_station_id: nvarchar/float, start_station_id: nvarchar/float
+	the columns with differnet data types are - end_station_id: nvarchar/float, start_station_id: nvarchar/float
 	the stations ID's are mostly numbers, but in some month stored also with letters, there for we will alter all stations ID's into NVARCHAR and not into FLOAT
 	(also cheack to see if it is possibale to change station ID's with existing FLOAT ID's using this query:
 	
@@ -74,3 +74,20 @@ the query shows us that not all the columns in the db have the same data type an
 		 WHERE station > 1
 	
 	sinch the quey returned zero rows we can understand that stations ID's with letters or distinctandcan't be replaced with existing FLOAT ID's)
+	
+	Query for altering station_id data type to all be the same (nvchar):
+	
+	ALTER TABLE trips202007 ALTER COLUMN start_station_id varchar(15)
+	ALTER TABLE trips202008 ALTER COLUMN start_station_id varchar(15)
+	ALTER TABLE trips202009 ALTER COLUMN start_station_id varchar(15)
+	ALTER TABLE trips202010 ALTER COLUMN start_station_id varchar(15)
+	ALTER TABLE trips202011 ALTER COLUMN start_station_id varchar(15)
+	ALTER TABLE trips202012 ALTER COLUMN start_station_id varchar(15)
+	ALTER TABLE trips202101 ALTER COLUMN start_station_id varchar(15)
+	ALTER TABLE trips202102 ALTER COLUMN start_station_id varchar(15)
+	ALTER TABLE trips202103 ALTER COLUMN start_station_id varchar(15)
+	
+	(did not include month 202104,05,06 because altering returned error - 
+	Msg 8152, Level 16, State 13, Line 50
+	String or binary data would be truncated.
+	The statement has been terminated.)
