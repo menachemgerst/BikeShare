@@ -137,4 +137,19 @@ and for altering end_station_id data type to all be the same (varchar):
 4. Inserting all tabels into one main table
 	
 	into the main table will add as many indicators and information that will help the final analysis
+	a. ride time
+	
+		SELECT	 ride_id
+			,started_at
+			,ended_at
+			,DATEDIFF(mi,started_at,ended_at) AS ride_time
+		FROM trips202007
+		
+	b. hour of the ride (to idetify riding "rush hours")
+		
+		DATEPART(HOUR, started_at) AS hour_ride
+		
+	c. weekday
+	d. month
+	e. season
 	
