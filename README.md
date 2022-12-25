@@ -179,4 +179,10 @@ and for altering end_station_id data type to all be the same (varchar):
 		 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
 		END AS Season
 		
+### Inserting all the data into the main table
+
+using UNION ALL for each one of the twelve tables and creating all the indicators
+
+		
+		
 	
