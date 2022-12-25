@@ -106,7 +106,7 @@ and for altering end_station_id data type to all be the same (varchar):
 
 3. Omitted data from the analysis
 		
-	the following data is irrelevant for the analysis and will not be insrted into the main table for analysis
+	the following data is irrelevant for the analysis
 	
 	a. test rides
 	
