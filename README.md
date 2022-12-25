@@ -77,15 +77,15 @@ the query shows us that not all the columns in the db have the same data type an
 	
 	Query for altering station_id data type to all be the same (nvchar):
 	
-	ALTER TABLE trips202007 ALTER COLUMN start_station_id varchar(15)
-	ALTER TABLE trips202008 ALTER COLUMN start_station_id varchar(15)
-	ALTER TABLE trips202009 ALTER COLUMN start_station_id varchar(15)
-	ALTER TABLE trips202010 ALTER COLUMN start_station_id varchar(15)
-	ALTER TABLE trips202011 ALTER COLUMN start_station_id varchar(15)
-	ALTER TABLE trips202012 ALTER COLUMN start_station_id varchar(15)
-	ALTER TABLE trips202101 ALTER COLUMN start_station_id varchar(15)
-	ALTER TABLE trips202102 ALTER COLUMN start_station_id varchar(15)
-	ALTER TABLE trips202103 ALTER COLUMN start_station_id varchar(15)
+		ALTER TABLE trips202007 ALTER COLUMN start_station_id varchar(15)
+		ALTER TABLE trips202008 ALTER COLUMN start_station_id varchar(15)
+		ALTER TABLE trips202009 ALTER COLUMN start_station_id varchar(15)
+		ALTER TABLE trips202010 ALTER COLUMN start_station_id varchar(15)
+		ALTER TABLE trips202011 ALTER COLUMN start_station_id varchar(15)
+		ALTER TABLE trips202012 ALTER COLUMN start_station_id varchar(15)
+		ALTER TABLE trips202101 ALTER COLUMN start_station_id varchar(15)
+		ALTER TABLE trips202102 ALTER COLUMN start_station_id varchar(15)
+		ALTER TABLE trips202103 ALTER COLUMN start_station_id varchar(15)
 	
 	(did not include month 202104,05,06 because altering returned error - 
 	Msg 8152, Level 16, State 13, Line 50
