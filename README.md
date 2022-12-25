@@ -105,12 +105,22 @@ and for altering end_station_id data type to all be the same (varchar):
 		
 
 3. Omitted data from the analysis
-		the following data is irelevant for the analysis and will not be insrted into the main table for analysis
-		a. test rides
 		
+	the following data is irelevant for the analysis and will not be insrted into the main table for analysis
+	
+	a. test rides
+	
+		SELECT *
+		FROM trips202007
+		WHERE 	start_station_name LIKE '%test%' 
+			OR start_station_name LIKE '%CHECK%' 
+			OR end_station_name LIKE '%test%' 
+			OR end_station_name LIKE '%CHECK%'
+			
 		
-		b. rides that didn't happen (or bad data was collocted)
+	b. rides that didn't happen (or bad data was collocted)
 	
 4. Inserting all tabels into one main table
-		into the main table will add as many indicators and information that will help the final analysis
+	
+	into the main table will add as many indicators and information that will help the final analysis
 	
