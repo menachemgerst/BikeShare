@@ -73,9 +73,9 @@ the query shows us that not all the columns in the db have the same data type an
 		) AS tbl
 		 WHERE station > 1
 	
-	sinch the quey returned zero rows we can understand that stations ID's with letters or distinctandcan't be replaced with existing FLOAT ID's)
+sinch the quey returned zero rows we can understand that stations ID's with letters or distinctandcan't be replaced with existing FLOAT ID's)
 	
-	Query for altering start_station_id data type to all be the same (varchar):
+Query for altering start_station_id data type to all be the same (varchar):
 	
 		ALTER TABLE trips202007 ALTER COLUMN start_station_id varchar(15)
 		ALTER TABLE trips202008 ALTER COLUMN start_station_id varchar(15)
@@ -87,12 +87,12 @@ the query shows us that not all the columns in the db have the same data type an
 		ALTER TABLE trips202102 ALTER COLUMN start_station_id varchar(15)
 		ALTER TABLE trips202103 ALTER COLUMN start_station_id varchar(15)
 	
-	(did not include month 202104,05,06 because altering returned error - 
-	Msg 8152, Level 16, State 13, Line 50
-	String or binary data would be truncated.
-	The statement has been terminated.)
+(did not include month 202104,05,06 because altering returned error - 
+Msg 8152, Level 16, State 13, Line 50
+String or binary data would be truncated.
+The statement has been terminated.)
 	
-	and for altering end_station_id data type to all be the same (varchar):
+and for altering end_station_id data type to all be the same (varchar):
 	
 		ALTER TABLE trips202007 ALTER COLUMN end_station_id varchar(15)
 		ALTER TABLE trips202008 ALTER COLUMN end_station_id varchar(15)
