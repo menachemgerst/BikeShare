@@ -75,7 +75,7 @@ the query shows us that not all the columns in the db have the same data type an
 	
 	sinch the quey returned zero rows we can understand that stations ID's with letters or distinctandcan't be replaced with existing FLOAT ID's)
 	
-	Query for altering station_id data type to all be the same (nvchar):
+	Query for altering start_station_id data type to all be the same (varchar):
 	
 		ALTER TABLE trips202007 ALTER COLUMN start_station_id varchar(15)
 		ALTER TABLE trips202008 ALTER COLUMN start_station_id varchar(15)
@@ -91,3 +91,12 @@ the query shows us that not all the columns in the db have the same data type an
 	Msg 8152, Level 16, State 13, Line 50
 	String or binary data would be truncated.
 	The statement has been terminated.)
+	
+	and for altering end_station_id data type to all be the same (varchar):
+	
+		ALTER TABLE trips202007 ALTER COLUMN end_station_id varchar(15)
+		ALTER TABLE trips202008 ALTER COLUMN end_station_id varchar(15)
+		ALTER TABLE trips202009 ALTER COLUMN end_station_id varchar(15)
+		ALTER TABLE trips202010 ALTER COLUMN end_station_id varchar(15)
+		ALTER TABLE trips202011 ALTER COLUMN end_station_id varchar(15)
+		ALTER TABLE trips202104 ALTER COLUMN end_station_id varchar(15)
