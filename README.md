@@ -107,7 +107,6 @@ and for altering end_station_id data type to all be the same (varchar):
 3. Omitted data from the analysis
 		
 	the following data is irelevant for the analysis and will not be insrted into the main table for analysis
-	
 	a. test rides
 	
 		SELECT *
@@ -119,6 +118,8 @@ and for altering end_station_id data type to all be the same (varchar):
 			
 		
 	b. rides that didn't happen (or bad data was collocted)
+	
+		
 	
 4. Inserting all tabels into one main table
 	
