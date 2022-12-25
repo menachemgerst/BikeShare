@@ -101,7 +101,11 @@ the query shows us that not all the columns in the db have the same data type an
 		ALTER TABLE trips202011 ALTER COLUMN end_station_id varchar(15)
 		ALTER TABLE trips202104 ALTER COLUMN end_station_id varchar(15)
 		
+
 3. Omitted data from the analysis
 	a. test rides
 	b. rides that didn't happen (or bad data was collocted)
+	
+4. Inserting all tabels into one main table
+	into the main table will add as many indicators and information that will help the final analysis
 	
