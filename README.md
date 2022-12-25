@@ -139,17 +139,43 @@ and for altering end_station_id data type to all be the same (varchar):
 	into the main table will add as many indicators and information that will help the final analysis
 	a. ride time
 	
-		SELECT	 ride_id
-			,started_at
-			,ended_at
-			,DATEDIFF(mi,started_at,ended_at) AS ride_time
-		FROM trips202007
+		
+		DATEDIFF(mi,started_at,ended_at) AS ride_time
+		
 		
 	b. hour of the ride (to idetify riding "rush hours")
 		
 		DATEPART(HOUR, started_at) AS hour_ride
 		
 	c. weekday
+		
+		 DATEPART(WEEKDAY, started_at) AS ride_weekday
+		,DATENAME(WEEKDAY, started_at) AS ride_weekday_name
+		
 	d. month
+		
+		DATEPART(MONTH, started_at) AS month
+		,DATENAME(MONTH, started_at) AS month_name
+		
 	e. season
+		
+		CASE 
+		WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
+		 OR (MONTH(started_at) = 4)
+		 OR (MONTH(started_at) = 5)
+		 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 'Spring'
+		WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
+		 OR (MONTH(started_at) = 7)
+		 OR (MONTH(started_at) = 8)
+		 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 'Summer'
+		WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
+		 OR (MONTH(started_at) = 10)
+		 OR (MONTH(started_at) = 11)
+		 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 'Fall'
+		HEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
+		 OR (MONTH(started_at) = 1)
+		 OR (MONTH(started_at) = 2)
+		 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
+		END AS Season
+		
 	
