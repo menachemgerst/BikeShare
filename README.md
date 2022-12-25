@@ -58,10 +58,10 @@ In further analysis will analyze longer time periods and try to identify and pre
 
 the query shows us that not all the columns in the db have the same data type and they need to be altered inorder to ba able to inserte all the tables into one main table.
 
-2. data altering
-	the columns with differnet data types are - end_station_id: nvarchar/float, start_station_id: nvarchar/float
-	the stations ID's are mostly numbers, but in some month stored also with letters, there for we will alter all stations ID's into NVARCHAR and not into FLOAT
-	(also cheack to see if it is possibale to change station ID's with existing FLOAT ID's using this query:
+	2. data altering
+		the columns with differnet data types are - end_station_id: nvarchar/float, start_station_id: nvarchar/float
+		the stations ID's are mostly numbers, but in some month stored also with letters, there for we will alter all stations ID's into NVARCHAR and not into 			FLOAT
+		(also cheack to see if it is possibale to change station ID's with existing FLOAT ID's using this query:
 	
 		SELECT * FROM
 		(
