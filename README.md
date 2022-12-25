@@ -137,6 +137,7 @@ and for altering end_station_id data type to all be the same (varchar):
 4. Inserting all tabels into one main table
 	
 	into the main table will add as many indicators and information that will help the final analysis
+	
 	a. ride time
 	
 		
