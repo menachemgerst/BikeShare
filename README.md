@@ -39,6 +39,7 @@ In further analysis will analyze longer time periods and try to identify and pre
 ### Data modifying and cleaning
 
 1. what is in the date?
+	
 	query for the tables and data types in the db(using a pivot table to identify same column with different data types):
 
 		SELECT *
@@ -59,6 +60,7 @@ In further analysis will analyze longer time periods and try to identify and pre
 the query shows us that not all the columns in the db have the same data type and they need to be altered inorder to ba able to inserte all the tables into one main table.
 
 2. data altering
+
 	the columns with differnet data types are - end_station_id: nvarchar/float, start_station_id: nvarchar/float
 	the stations ID's are mostly numbers, but in some month stored also with letters, there for we will alter all stations ID's into NVARCHAR and not into 		FLOAT
 	(also cheack to see if it is possibale to change station ID's with existing FLOAT ID's using this query:
@@ -103,7 +105,10 @@ and for altering end_station_id data type to all be the same (varchar):
 		
 
 3. Omitted data from the analysis
+		the following data is irelevant for the analysis and will not be insrted into the main table for analysis
 		a. test rides
+		
+		
 		b. rides that didn't happen (or bad data was collocted)
 	
 4. Inserting all tabels into one main table
