@@ -855,7 +855,9 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 
 1. total rides
 
-	
+	SELECT COUNT (*) AS 'total rides'
+	FROM trips
+	WHERE no_ride = 0
 	
 2. total rides by membership
 	
