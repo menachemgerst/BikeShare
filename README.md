@@ -855,17 +855,34 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 
 1. total rides
 
-	SELECT COUNT (*) AS 'total rides'
-	FROM trips
-	WHERE no_ride = 0
+		SELECT COUNT (*) AS 'total rides'
+		FROM trips
+		WHERE no_ride = 0
 	
 2. total rides by membership
 	
-	
+		SELECT 	 member_casual
+			,COUNT(*) AS rider_type
+			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
+		FROM trips
+		GROUP BY member_casual
 	
 3. total rides by bike type
 	
-	
+		
+		WITH  CTE AS
+		(
+			SELECT	 *
+			,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+			      ELSE 'electric_bike'
+		 	 END AS bike_type
+			FROM trips
+		)
+		SELECT 	 bike_type
+			,COUNT(*) AS rider_type
+			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
+		FROM CTE
+		GROUP BY bike_type
 	
 4. total rides by membership and bike type
 	
