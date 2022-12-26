@@ -851,3 +851,34 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	FROM CTE
 			
 	
+## Some Numbers
+
+1. total rides
+
+	
+	
+2. total rides by membership
+	
+	
+	
+3. total rides by bike type
+	
+	
+	
+4. total rides by membership and bike type
+	
+	
+	
+5. days of the week
+	
+	
+	
+6. month
+	
+	
+	
+7. seasons
+	
+	
+	
+8. part of the day
