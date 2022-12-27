@@ -883,6 +883,8 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
 		FROM CTE
 		GROUP BY bike_type
+		![image](https://user-images.githubusercontent.com/73856609/209715364-e69f8c26-153d-4d9b-b63f-6cdcb92f22a1.png)
+
 	
 4. total rides by membership and bike type
 	
