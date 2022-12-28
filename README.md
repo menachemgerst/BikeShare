@@ -893,9 +893,9 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 		WITH  CTE AS
 		(
 			SELECT	 *
-					,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
-						  ELSE 'electric_bike'
-					END AS bike_type
+				,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+				      ELSE 'electric_bike'
+				 END AS bike_type
 			FROM trips
 		)
 		SELECT	member_casual
@@ -911,7 +911,9 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 			,bike_type
 		
 		
-	
+	![image](https://user-images.githubusercontent.com/73856609/209858958-ff11acbf-0c69-41b5-a456-cb644e949132.png)
+
+		
 5. days of the week
 	
 	
