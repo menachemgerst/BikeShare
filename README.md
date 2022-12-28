@@ -1018,9 +1018,11 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 
 
 ### Quick Analysis
-over 12 month 4,460,151 rides were recorded, 38,383 are not in the analysis and 4,421,768 rides are in the final analysis (column name = 'no_ride')
-	anual members are 56% of total rides
-		riders (both members and casual riders) prefer the regualr bike (75%) over the electric bikes (25%)
+	over 12 month 4,460,151 rides were recorded, 38,383 are not in the analysis and 4,421,768 rides are in the final analysis (column name = 'no_ride')
+	- anual members are 56% of total rides
+	- riders (both members and casual riders) prefer the regualr bike (75%) over the electric bikes (25%)
+	- casual riders ride more on weekends ,57% of casual rides on Fri-Sun. 
+	- anual riders ride a little bit more on weekends but not significantly
 
 
 
