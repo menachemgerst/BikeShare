@@ -956,6 +956,55 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	
 7. seasons
 	
+		WITH CTE AS
+		(
+			SELECT *
+				,CASE WHEN season = 'spring' THEN 1
+				      WHEN season = 'summer' THEN 2
+				      WHEN season = 'fall' THEN 3
+				      WHEN season = 'winter' THEN 4
+			END AS 'season_n'
+			FROM trips
+			WHERE no_ride = 0
+		)
+		SELECT	 season
+			,COUNT(*) AS total_day
+			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
+		FROM CTE
+		GROUP BY  season_n
+			 ,season
+		ORDER BY  season_n
+			 ,season
+				
 	
+	![image](https://user-images.githubusercontent.com/73856609/209867895-74b29f01-5928-4448-9c3c-7315946250b1.png)
+
 	
 8. part of the day
+
+		WITH CTE AS
+		(
+			SELECT *
+				,CASE WHEN day_part = '0.Middle of the night' THEN '01:00-04:59'
+			  		WHEN day_part = '1.Early Morning' THEN '05:00-06:59'
+			  		WHEN day_part = '2.Morning' THEN '07:00-09:59'
+			  		WHEN day_part = '3.Late Morning' THEN '10:00-11:59'
+			  		WHEN day_part = '4.Afternoon' THEN '12:00-15:59'
+			  		WHEN day_part = '5.Late Afternoon' THEN '16:00-17:59'
+			  		WHEN day_part = '6.Evening' THEN '18:00-20:59'
+			  		WHEN day_part = '7.Night' THEN '21:00-00:59'
+		 		END AS 'day_part_h'
+			FROM trips
+			WHERE no_ride = 0
+		)
+		SELECT	 day_part
+			,day_part_h
+			,COUNT(*) AS total_day
+			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
+		FROM CTE
+		GROUP BY day_part
+			,day_part_h
+		ORDER BY day_part
+
+	![image](https://user-images.githubusercontent.com/73856609/209868175-fe0a5a50-d2bb-4b14-9b79-e15da2b3f7ff.png)
+
