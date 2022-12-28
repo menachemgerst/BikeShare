@@ -890,7 +890,27 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	
 4. total rides by membership and bike type
 	
-	
+		WITH  CTE AS
+		(
+			SELECT	 *
+					,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+						  ELSE 'electric_bike'
+					END AS bike_type
+			FROM trips
+		)
+		SELECT	member_casual
+			,bike_type
+			,COUNT(*) AS 'rider_type'
+			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS 'pctfrom_total'
+			,FORMAT(COUNT(*) * 1.0 / SUM(COUNT(*)) OVER (PARTITION BY member_casual), 'P') AS 'pct_from_membership'
+			,FORMAT(COUNT(*) * 1.0 / SUM(COUNT(*)) OVER (PARTITION BY bike_type), 'P') AS 'pct_from_bike_type'
+		FROM CTE
+		GROUP BY member_casual
+			,bike_type 
+		ORDER BY member_casual
+			,bike_type
+		
+		
 	
 5. days of the week
 	
