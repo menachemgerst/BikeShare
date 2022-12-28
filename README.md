@@ -926,10 +926,33 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 5. days of the week
 	
 	
-	
+		SELECT	 ride_weekday_name
+			,COUNT(*) AS total_day
+			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
+		FROM trips
+		WHERE no_ride = 0
+		GROUP BY ride_weekday
+			,ride_weekday_name
+		ORDER BY ride_weekday
+			,ride_weekday_name
+			
+	![image](https://user-images.githubusercontent.com/73856609/209867534-ea6ee5ab-9386-4a94-9b5b-713d195f01fe.png)
+		
+		
 6. month
 	
-	
+		SELECT	 month_name
+			,COUNT(*) AS total_day
+			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
+		FROM trips
+		WHERE no_ride = 0
+		GROUP BY  month
+		 	 ,month_name
+		ORDER BY  month
+		 	 ,month_name
+			 
+	![image](https://user-images.githubusercontent.com/73856609/209867672-e4ab3cb9-6e84-4fcf-a61c-e1d5b0d43d00.png)
+
 	
 7. seasons
 	
