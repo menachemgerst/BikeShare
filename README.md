@@ -858,6 +858,9 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 		SELECT COUNT (*) AS 'total rides'
 		FROM trips
 		WHERE no_ride = 0
+		
+	![image](https://user-images.githubusercontent.com/73856609/209859670-c7822b8a-3952-424b-a833-9e48c187e344.png)
+
 	
 2. total rides by membership
 	
@@ -865,7 +868,11 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 			,COUNT(*) AS rider_type
 			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
 		FROM trips
+		WHERE no_ride = 0
 		GROUP BY member_casual
+	
+	![image](https://user-images.githubusercontent.com/73856609/209859448-0d97bb97-30d5-4333-b59a-f568313cdc55.png)
+
 	
 3. total rides by bike type
 	
@@ -876,7 +883,8 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 			,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
 			      ELSE 'electric_bike'
 		 	 END AS bike_type
-			FROM trips
+			 FROM trips
+			 WHERE no_ride = 0
 		)
 		SELECT 	 bike_type
 			,COUNT(*) AS rider_type
@@ -885,7 +893,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 		GROUP BY bike_type
 		
 		
-	![image](https://user-images.githubusercontent.com/73856609/209715364-e69f8c26-153d-4d9b-b63f-6cdcb92f22a1.png)
+	![image](https://user-images.githubusercontent.com/73856609/209859607-3b8f10ad-f23d-460e-b151-55f3c3b224da.png)
 
 	
 4. total rides by membership and bike type
@@ -911,7 +919,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 			,bike_type
 		
 		
-	![image](https://user-images.githubusercontent.com/73856609/209858958-ff11acbf-0c69-41b5-a456-cb644e949132.png)
+	![image](https://user-images.githubusercontent.com/73856609/209859745-4ae618bd-6b20-4832-9241-009a51791c53.png)
 
 		
 5. days of the week
