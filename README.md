@@ -905,6 +905,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 				      ELSE 'electric_bike'
 				 END AS bike_type
 			FROM trips
+			WHERE no_ride = 0
 		)
 		SELECT	member_casual
 			,bike_type
