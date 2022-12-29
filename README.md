@@ -869,8 +869,17 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 		
 	![image](https://user-images.githubusercontent.com/73856609/209872781-2c5462dd-ab48-4ed1-8e1b-df5f2a6b32ef.png)
 
+3. Average ride time by membership
 
-3. total rides by membership
+		SELECT   member_casual
+			,AVG (ride_time) AS 'ride_avg'
+		FROM trips
+		WHERE no_ride = 0
+		GROUP BY member_casual
+		
+	![image](https://user-images.githubusercontent.com/73856609/210017858-f718e027-e8c2-42bc-9294-0e6fbbb2fad2.png)
+
+4. total rides by membership
 	
 		SELECT 	 member_casual
 			,COUNT(*) AS rider_type
@@ -882,7 +891,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	![image](https://user-images.githubusercontent.com/73856609/209859448-0d97bb97-30d5-4333-b59a-f568313cdc55.png)
 
 	
-4. total rides by bike type
+5. total rides by bike type
 	
 		
 		WITH  CTE AS
@@ -904,7 +913,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	![image](https://user-images.githubusercontent.com/73856609/209859607-3b8f10ad-f23d-460e-b151-55f3c3b224da.png)
 
 	
-5. total rides by membership and bike type
+6. total rides by membership and bike type
 	
 		WITH  CTE AS
 		(
@@ -931,7 +940,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	![image](https://user-images.githubusercontent.com/73856609/209859745-4ae618bd-6b20-4832-9241-009a51791c53.png)
 
 		
-6. days of the week
+7. days of the week
 	
 	
 		SELECT	 ride_weekday_name
@@ -947,7 +956,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	![image](https://user-images.githubusercontent.com/73856609/209867534-ea6ee5ab-9386-4a94-9b5b-713d195f01fe.png)
 		
 		
-7. month
+8. month
 	
 		SELECT	 month_name
 			,COUNT(*) AS total_day
@@ -962,7 +971,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	![image](https://user-images.githubusercontent.com/73856609/209867672-e4ab3cb9-6e84-4fcf-a61c-e1d5b0d43d00.png)
 
 	
-8. seasons
+9. seasons
 	
 		WITH CTE AS
 		(
@@ -988,7 +997,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	![image](https://user-images.githubusercontent.com/73856609/209867895-74b29f01-5928-4448-9c3c-7315946250b1.png)
 
 	
-8. part of the day
+10. part of the day
 
 		WITH CTE AS
 		(
@@ -1019,11 +1028,15 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 
 ### Quick Analysis
 
-over 12 month 4,460,151 rides were recorded, 38,383 are not in the analysis and 4,421,768 rides are in the final analysis (column name = 'no_ride')
+over 12 month 4,460,151 rides were recorded, 38,383 are not in the analysis (test rides, zero minutes or bad data) and 4,421,768 rides are in the final analysis (column name = 'no_ride')
 - anual members are 56% of total rides
 - riders (both members and casual riders) prefer the regualr bike (75%) over the electric bikes (25%)
-- casual riders ride more on weekends ,57% of casual rides on Fri-Sun. 
+- casual riders ride more on weekends  - 57% of casual rides are on Fri-Sun. 
 - anual riders ride a little bit more on weekends but not significantly
+- anual riders ride an average of 15 minutes to an average of 40 minutes by casual riders
+- when it's cold the number of rides drop - 73% of the rides or in the spring and summer
+- the number of casual riders drops in the winter, only 25% of the rides in the winter are by casual riders
+- 
 
 
 
