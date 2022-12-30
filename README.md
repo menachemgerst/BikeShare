@@ -869,7 +869,6 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 		
 	![image](https://user-images.githubusercontent.com/73856609/209872781-2c5462dd-ab48-4ed1-8e1b-df5f2a6b32ef.png)
 
-3. Average ride time by membership
 
 		SELECT   member_casual
 			,AVG (ride_time) AS 'ride_avg'
@@ -879,7 +878,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 		
 	![image](https://user-images.githubusercontent.com/73856609/210017858-f718e027-e8c2-42bc-9294-0e6fbbb2fad2.png)
 
-4. total rides by membership
+3. total rides by membership
 	
 		SELECT 	 member_casual
 			,COUNT(*) AS rider_type
@@ -891,7 +890,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	![image](https://user-images.githubusercontent.com/73856609/209859448-0d97bb97-30d5-4333-b59a-f568313cdc55.png)
 
 	
-5. total rides by bike type
+4. total rides by bike type
 	
 		
 		WITH  CTE AS
@@ -913,7 +912,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	![image](https://user-images.githubusercontent.com/73856609/209859607-3b8f10ad-f23d-460e-b151-55f3c3b224da.png)
 
 	
-6. total rides by membership and bike type
+5. total rides by membership and bike type
 	
 		WITH  CTE AS
 		(
@@ -940,7 +939,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	![image](https://user-images.githubusercontent.com/73856609/209859745-4ae618bd-6b20-4832-9241-009a51791c53.png)
 
 		
-7. days of the week
+6. days of the week
 	
 	
 		SELECT	 ride_weekday_name
@@ -956,7 +955,26 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	![image](https://user-images.githubusercontent.com/73856609/209867534-ea6ee5ab-9386-4a94-9b5b-713d195f01fe.png)
 		
 		
-8. month
+		SELECT	 member_casual
+			,ride_weekday_name
+			,COUNT(*) AS total_day
+			,AVG(ride_time) AS 'avg'
+			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
+			,FORMAT(COUNT(*) * 1.0 / SUM(COUNT(*)) OVER (PARTITION BY member_casual), 'P') AS 'pct_from_membership'
+			,FORMAT(COUNT(*) * 1.0 / SUM(COUNT(*)) OVER (PARTITION BY ride_weekday), 'P') AS 'pct_from_ride_weekday'
+		FROM trips
+		WHERE no_ride = 0
+		GROUP BY member_casual
+			,ride_weekday
+			,ride_weekday_name
+		ORDER BY member_casual
+			,ride_weekday
+			,ride_weekday_name
+		
+	![image](https://user-images.githubusercontent.com/73856609/210068262-2c0d74bf-b267-483b-b700-787676c400f4.png)
+
+		
+7. month
 	
 		SELECT	 month_name
 			,COUNT(*) AS total_day
@@ -971,7 +989,7 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 	![image](https://user-images.githubusercontent.com/73856609/209867672-e4ab3cb9-6e84-4fcf-a61c-e1d5b0d43d00.png)
 
 	
-9. seasons
+8. seasons
 	
 		WITH CTE AS
 		(
@@ -1030,10 +1048,10 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 
 over 12 month 4,460,151 rides were recorded, 38,383 are not in the analysis (test rides, zero minutes or bad data) and 4,421,768 rides are in the final analysis (column name = 'no_ride')
 - anual members are 56% of total rides
+- anual riders ride an average of 15 minutes to an average of 40 minutes by casual riders
 - riders (both members and casual riders) prefer the regualr bike (75%) over the electric bikes (25%)
 - casual riders ride more on weekends  - 57% of casual rides are on Fri-Sun. 
 - anual riders ride a little bit more on weekends but not significantly
-- anual riders ride an average of 15 minutes to an average of 40 minutes by casual riders
 - when it's cold the number of rides drop - 73% of the rides or in the spring and summer
 - the number of casual riders drops in the winter, only 25% of the rides in the winter are by casual riders
 - between 10:00 and 21:00 the casual and anual riders use the bikes the same. members ride more in the earler morning hours (05:00 - 10:00, 70% + of the rides), and casual riders like the late hours more (21:00-05:00, 60% +/- of the rides)
