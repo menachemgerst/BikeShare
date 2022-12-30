@@ -1036,7 +1036,7 @@ over 12 month 4,460,151 rides were recorded, 38,383 are not in the analysis (tes
 - anual riders ride an average of 15 minutes to an average of 40 minutes by casual riders
 - when it's cold the number of rides drop - 73% of the rides or in the spring and summer
 - the number of casual riders drops in the winter, only 25% of the rides in the winter are by casual riders
-- 
+- between 10:00 and 21:00 the casual and anual riders use the bikes the same. members ride more in the earler morning hours (05:00 - 10:00, 70% + of the rides), and casual riders like the late hours more (21:00-05:00, 60% +/- of the rides)
 
 
 
