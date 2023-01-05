@@ -1061,5 +1061,16 @@ over 12 month 4,460,151 rides were recorded, 38,383 are not in the analysis (tes
 
 in the next step we will analyze the characteristics of the riders by stations - top stations by membership, days of the week, seasons etc.
 
+a. top stations
+		
+		SELECT	 start_station_name 
+			,COUNT(*) AS 'rides_per_station'
+			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
+		FROM trips
+		WHERE start_station_name IS NOT NULL
+		GROUP BY start_station_name
+		ORDER BY rides_per_station DESC
+		
+b. 
 
 
