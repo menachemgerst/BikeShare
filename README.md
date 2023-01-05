@@ -1057,4 +1057,9 @@ over 12 month 4,460,151 rides were recorded, 38,383 are not in the analysis (tes
 - between 10:00 and 21:00 the casual and anual riders use the bikes the same. members ride more in the earler morning hours (05:00 - 10:00, 70% + of the rides), and casual riders like the late hours more (21:00-05:00, 60% +/- of the rides)
 
 
+### Further Analysis
+
+in the next step we will analyze the characteristics of the riders by stations - top stations by membership, days of the week, seasons etc.
+
+
 
