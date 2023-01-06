@@ -1069,8 +1069,8 @@ the number of stations is:
 
 
 
-	![image](https://user-images.githubusercontent.com/73856609/211014914-dd206105-a99e-43d4-81f5-4d65336e8380.png)
-
+	
+![image](https://user-images.githubusercontent.com/73856609/211014914-dd206105-a99e-43d4-81f5-4d65336e8380.png)
 
 a. top stations
 		
@@ -1084,8 +1084,8 @@ a. top stations
 	
 	
 
-	![image](https://user-images.githubusercontent.com/73856609/211015115-0e3eaa16-7959-41eb-8d89-3e7d039cdd50.png)
-
+	
+![image](https://user-images.githubusercontent.com/73856609/211015115-0e3eaa16-7959-41eb-8d89-3e7d039cdd50.png)
 	
 b. stations by membership
 
