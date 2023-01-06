@@ -1068,6 +1068,7 @@ the number of stations is:
 		FROM 	 trips
 
 
+
 	![image](https://user-images.githubusercontent.com/73856609/211014914-dd206105-a99e-43d4-81f5-4d65336e8380.png)
 
 
@@ -1082,6 +1083,7 @@ a. top stations
 		ORDER BY rides_per_station DESC
 	
 	
+
 	![image](https://user-images.githubusercontent.com/73856609/211015115-0e3eaa16-7959-41eb-8d89-3e7d039cdd50.png)
 
 	
