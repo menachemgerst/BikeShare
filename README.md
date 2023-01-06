@@ -1061,6 +1061,12 @@ over 12 month 4,460,151 rides were recorded, 38,383 are not in the analysis (tes
 
 in the next step we will analyze the characteristics of the riders by stations - top stations by membership, days of the week, seasons etc.
 
+the number of stations is:
+
+		SELECT	 COUNT(DISTINCT start_station_name) AS 'Total_start_stations'
+			,COUNT(DISTINCT end_station_name) AS 'Total_end_stations'
+		FROM 	 trips
+
 a. top stations
 		
 		SELECT	 start_station_name 
