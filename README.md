@@ -1089,30 +1089,46 @@ a. top stations
 	
 b. stations by membership
 
-		WITH CTE AS
+		SELECT	s.start_station_name
+			,s.statioins AS 'station_rides'
+			,ROW_NUMBER() OVER (ORDER BY s.statioins DESC) AS 'top_stations'
+			,c.statioins AS 'casual_rides'
+			,ROW_NUMBER() OVER (ORDER BY c.statioins DESC) AS 'casual_top_stations'
+			,c.statioins AS 'member_rides'
+			,ROW_NUMBER() OVER (ORDER BY m.statioins DESC) AS 'member_top_stations'
+		FROM
 		(
-			SELECT	 *
-				,COUNT(ride_id) OVER (PARTITION BY start_station_name) AS 'rides_per_station'
-				,COUNT(ride_id) OVER (PARTITION BY start_station_name, member_casual)AS 'rides_per_station_by_membership'
-			FROM trips
-			WHERE start_station_name IS NOT NULL
-		)
 		SELECT	 start_station_name
-			,member_casual
-			,MAX(rides_per_station) AS rides_per_station
-			,MAX(rides_per_station_by_membership) AS rides_per_station_by_membership
-			,ROW_NUMBER() OVER(PARTITION BY member_casual ORDER BY MAX(rides_per_station) DESC) AS 'station_rank'
-			,ROW_NUMBER() OVER(PARTITION BY member_casual ORDER BY MAX(rides_per_station_by_membership) DESC) AS 'station_rank_membership'
-			,FORMAT(MAX(rides_per_station_by_membership)*1.0 /MAX(rides_per_station), 'P') AS 'pct_membership_at_station'
-		FROM CTE
-		GROUP BY member_casual
-			,start_station_name
-		ORDER BY rides_per_station DESC
-			,member_casual
+			,COUNT(*) AS 'statioins'
+		FROM trips
+		WHERE start_station_name IS NOT NULL 
+		GROUP BY start_station_name
+		)s 
+		JOIN
+		(
+		SELECT	 start_station_name
+			,COUNT(*) AS 'statioins'
+		FROM trips
+		WHERE start_station_name IS NOT NULL 
+		      AND member_casual = 'casual'
+		GROUP BY start_station_name
+		) c ON s.start_station_name = c.start_station_name
+		JOIN
+		(
+		SELECT	 start_station_name
+				,COUNT(*) AS 'statioins'
+		FROM trips
+		WHERE start_station_name IS NOT NULL 
+		      AND member_casual = 'member'
+		GROUP BY start_station_name
+		) m
+		ON c.start_station_name = m.start_station_name
+		ORDER BY ROW_NUMBER() OVER (ORDER BY s.statioins DESC)
 
 
+![image](https://user-images.githubusercontent.com/73856609/211173033-8eb82de0-b6eb-4f97-bad4-fbbda06dbbaf.png)
 
-![image](https://user-images.githubusercontent.com/73856609/211168148-49c6e5ad-e9ef-4113-ba03-0475232bbc63.png)
+
 
 c. stations by weekday 
 d. stations by weekday membership
