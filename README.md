@@ -1075,7 +1075,7 @@ the number of stations is:
 a. top stations
 		
 		SELECT	 start_station_name 
-			,COUNT(*) AS 'rides_per_station'
+			,COUNT(*) AS 'rides_per _station'
 			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
 		FROM trips
 		WHERE start_station_name IS NOT NULL
@@ -1114,7 +1114,8 @@ b. stations by membership
 
 ![image](https://user-images.githubusercontent.com/73856609/211168148-49c6e5ad-e9ef-4113-ba03-0475232bbc63.png)
 
-
+c. stations by weekday 
+d. stations by weekday membership
 
 ## Near the Stations
 
