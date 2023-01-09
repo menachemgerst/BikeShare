@@ -1134,6 +1134,51 @@ b. stations by membership
 
 
 c. stations by weekday - weekend
+
+		SELECT	 s.start_station_name
+			,s.station_rnk
+			,s.station
+			,d.weekday_rnk
+			,d.weekday
+			,e.weekend_rnk
+			,e.weekend
+			,d.weekday_rnk - e.weekend_rnk AS 'weekend_change'
+		FROM
+		(
+		SELECT start_station_name
+			,COUNT(ride_id) AS 'station'
+			,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'station_rnk'
+		FROM trips
+		WHERE start_station_name IS NOT NULL 
+		GROUP BY start_station_name
+		) s
+		JOIN
+		(
+		SELECT	  start_station_name
+			,COUNT(ride_id) AS 'weekday'
+			,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'weekday_rnk'
+		FROM trips
+		WHERE start_station_name IS NOT NULL 
+		AND ride_weekday  IN (2,3,4,5)
+		GROUP BY start_station_name
+		) d ON s.start_station_name = d.start_station_name
+		JOIN
+		(
+		SELECT	  start_station_name
+			,COUNT(ride_id) AS 'weekend'
+			,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'weekend_rnk'
+		FROM trips
+		WHERE start_station_name IS NOT NULL 
+		AND ride_weekday  IN (6,7,1)
+		GROUP BY start_station_name
+		) e ON d.start_station_name = e.start_station_name
+		ORDER BY station DESC
+
+
+![image](https://user-images.githubusercontent.com/73856609/211410827-6071e3e9-019d-4b00-95ab-748f537f2b94.png)
+
+
+
 d. stations by weekday membership
 
 ## Near the Stations
