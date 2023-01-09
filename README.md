@@ -1233,6 +1233,62 @@ d. stations by weekday casual
 
 ![image](https://user-images.githubusercontent.com/73856609/211414635-5d49fbc0-d576-481d-9be1-f4f03583a54e.png)
 
+d. stations by weekday member
+
+
+			SELECT	s.start_station_name
+				,s.station_rnk
+				,s.station
+				,c.member_rnk
+				,d.weekday_rnk
+				,e.weekend_rnk
+				,d.weekday_rnk - e.weekend_rnk AS 'weekend_change'
+			FROM
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'station'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'station_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			GROUP BY start_station_name
+			) s
+			JOIN
+			(
+				SELECT start_station_name
+				,COUNT(ride_id) AS 'member'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'member_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND member_casual = 'member'
+			GROUP BY start_station_name
+			) c ON s.start_station_name = c.start_station_name
+			JOIN
+			(
+			SELECT	  start_station_name
+				,COUNT(ride_id) AS 'weekday'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'weekday_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND ride_weekday  IN (2,3,4,5)
+			AND member_casual = 'member'
+			GROUP BY start_station_name
+			) d ON c.start_station_name = d.start_station_name
+			JOIN
+			(
+			SELECT	  start_station_name
+				,COUNT(ride_id) AS 'weekend'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'weekend_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND ride_weekday  IN (6,7,1)
+			AND member_casual = 'member'
+			GROUP BY start_station_name
+			) e ON d.start_station_name = e.start_station_name
+			ORDER BY member DESC
+			
+			
+![image](https://user-images.githubusercontent.com/73856609/211415359-c4c00643-af57-4176-b059-0afe4ae8f19e.png)
+
 
 
 ## Near the Stations
