@@ -1089,17 +1089,18 @@ a. top stations
 	
 b. stations by membership
 
-		SELECT	s.start_station_name
-			,s.statioins AS 'station_rides'
-			,ROW_NUMBER() OVER (ORDER BY s.statioins DESC) AS 'top_stations'
-			,c.statioins AS 'casual_rides'
-			,ROW_NUMBER() OVER (ORDER BY c.statioins DESC) AS 'casual_top_stations'
-			,c.statioins AS 'member_rides'
-			,ROW_NUMBER() OVER (ORDER BY m.statioins DESC) AS 'member_top_stations'
+		SELECT	 s.start_station_name
+			,s.station_rnk
+			,s.station
+			,c.casual_rnk
+			,c.casual
+			,m.member_rnk
+			,m.member
 		FROM
 		(
 		SELECT	 start_station_name
-			,COUNT(*) AS 'statioins'
+			,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'station_rnk'
+			,COUNT(ride_id) AS 'station'
 		FROM trips
 		WHERE start_station_name IS NOT NULL 
 		GROUP BY start_station_name
@@ -1107,7 +1108,8 @@ b. stations by membership
 		JOIN
 		(
 		SELECT	 start_station_name
-			,COUNT(*) AS 'statioins'
+			,COUNT(ride_id) AS 'casual'
+			,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'casual_rnk'
 		FROM trips
 		WHERE start_station_name IS NOT NULL 
 		      AND member_casual = 'casual'
@@ -1116,21 +1118,22 @@ b. stations by membership
 		JOIN
 		(
 		SELECT	 start_station_name
-				,COUNT(*) AS 'statioins'
+			,COUNT(ride_id) AS 'member'
+			,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'member_rnk'
 		FROM trips
 		WHERE start_station_name IS NOT NULL 
 		      AND member_casual = 'member'
 		GROUP BY start_station_name
 		) m
 		ON c.start_station_name = m.start_station_name
-		ORDER BY ROW_NUMBER() OVER (ORDER BY s.statioins DESC)
+		ORDER BY s.station DESC
+	
+
+![image](https://user-images.githubusercontent.com/73856609/211408735-366f4278-d691-4dc7-9a83-9edf9e9311b2.png)
 
 
-![image](https://user-images.githubusercontent.com/73856609/211173033-8eb82de0-b6eb-4f97-bad4-fbbda06dbbaf.png)
 
-
-
-c. stations by weekday 
+c. stations by weekday - weekend
 d. stations by weekday membership
 
 ## Near the Stations
