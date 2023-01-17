@@ -1358,6 +1358,175 @@ e. stations by season
 ![image](https://user-images.githubusercontent.com/73856609/212997231-277b56ac-0133-47ad-8064-714692097c4b.png)
 
 
+f. stations by season - casual
+
+
+			
+			SELECT	s.start_station_name
+				,s.station_rnk
+				,s.station
+				,c.casual_rnk
+				,c.casual
+				,sp.spring_rnk
+				,FORMAT(sp.spring*1.0 / c.casual, 'P') AS 'spring_p'
+				,su.summer_rnk
+				,FORMAT(su.summer*1.0 / c.casual, 'P') AS 'summer_p'
+				,f.fall_rnk
+				,FORMAT(f.fall*1.0 / c.casual, 'P') AS 'fall_p'
+				,w.winter_rnk
+				,FORMAT(w.winter*1.0 / c.casual, 'P') AS 'winter_p'
+			FROM
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'casual'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'casual_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND member_casual = 'casual'
+			GROUP BY start_station_name
+			) c
+			JOIN
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'station'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'station_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			GROUP BY start_station_name
+			) s ON c.start_station_name = s.start_station_name
+			JOIN
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'spring'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'spring_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND season = 'spring'
+			AND member_casual = 'casual'
+			GROUP BY start_station_name
+			) sp ON s.start_station_name = sp.start_station_name
+			JOIN
+			(
+			SELECT	  start_station_name
+				,COUNT(ride_id) AS 'summer'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'summer_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND season = 'summer'
+			AND member_casual = 'casual'
+			GROUP BY start_station_name
+			) su ON sp.start_station_name = su.start_station_name
+			JOIN
+			(
+			SELECT	  start_station_name
+				,COUNT(ride_id) AS 'fall'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'fall_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND season = 'fall'
+			AND member_casual = 'casual'
+			GROUP BY start_station_name
+			) f ON su.start_station_name = f.start_station_name
+			JOIN
+			(
+			SELECT	  start_station_name
+				,COUNT(ride_id) AS 'winter'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'winter_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND season = 'winter'
+			AND member_casual = 'casual'
+			GROUP BY start_station_name
+			) w ON f.start_station_name = w.start_station_name
+			ORDER BY casual DESC
+			
+
+![image](https://user-images.githubusercontent.com/73856609/213005370-1e3894d6-ab63-4522-9241-c8c6518e5eb5.png)
+
+
+g. stations by season - member
+
+			
+			SELECT	s.start_station_name
+				,s.station_rnk
+				,s.station
+				,c.member_rnk
+				,c.member
+				,sp.spring_rnk
+				,FORMAT(sp.spring*1.0 / c.member, 'P') AS 'spring_p'
+				,su.summer_rnk
+				,FORMAT(su.summer*1.0 / c.member, 'P') AS 'summer_p'
+				,f.fall_rnk
+				,FORMAT(f.fall*1.0 / c.member, 'P') AS 'fall_p'
+				,w.winter_rnk
+				,FORMAT(w.winter*1.0 / c.member, 'P') AS 'winter_p'
+			FROM
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'member'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'member_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND member_casual = 'member'
+			GROUP BY start_station_name
+			) c
+			JOIN
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'station'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'station_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			GROUP BY start_station_name
+			) s ON c.start_station_name = s.start_station_name
+			JOIN
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'spring'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'spring_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND season = 'spring'
+			AND member_casual = 'member'
+			GROUP BY start_station_name
+			) sp ON s.start_station_name = sp.start_station_name
+			JOIN
+			(
+			SELECT	  start_station_name
+				,COUNT(ride_id) AS 'summer'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'summer_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND season = 'summer'
+			AND member_casual = 'member'
+			GROUP BY start_station_name
+			) su ON sp.start_station_name = su.start_station_name
+			JOIN
+			(
+			SELECT	  start_station_name
+				,COUNT(ride_id) AS 'fall'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'fall_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND season = 'fall'
+			AND member_casual = 'member'
+			GROUP BY start_station_name
+			) f ON su.start_station_name = f.start_station_name
+			JOIN
+			(
+			SELECT	  start_station_name
+				,COUNT(ride_id) AS 'winter'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'winter_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND season = 'winter'
+			AND member_casual = 'member'
+			GROUP BY start_station_name
+			) w ON f.start_station_name = w.start_station_name
+			ORDER BY member DESC
+			
+			
+
 ## Near the Stations
 
 ## Ride Disstance
