@@ -1292,14 +1292,17 @@ d. stations by weekday member
 
 e. stations by season
 			
-SELECT	s.start_station_name
-			,s.station_rnk
-			,s.station
-			,sp.spring_rnk
-			,su.summer_rnk
-			,f.fall_rnk
-			,w.winter_rnk
-			--,d.weekday_rnk - e.weekend_rnk AS 'weekend_change'
+			SELECT	s.start_station_name
+				,s.station_rnk
+				,s.station
+				,sp.spring_rnk
+				,FORMAT(sp.spring*1.0 / s.station, 'P') AS 'spring_p'
+				,su.summer_rnk
+				,FORMAT(su.summer*1.0 / s.station, 'P') AS 'summer_p'
+				,f.fall_rnk
+				,FORMAT(f.fall*1.0 / s.station, 'P') AS 'fall_p'
+				,w.winter_rnk
+				,FORMAT(w.winter*1.0 / s.station, 'P') AS 'winter_p'
 			FROM
 			(
 			SELECT start_station_name
@@ -1352,6 +1355,7 @@ SELECT	s.start_station_name
 			ORDER BY station DESC
 			
 			
+![image](https://user-images.githubusercontent.com/73856609/212997231-277b56ac-0133-47ad-8064-714692097c4b.png)
 
 
 ## Near the Stations
