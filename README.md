@@ -1525,6 +1525,7 @@ g. stations by season - member
 			) w ON f.start_station_name = w.start_station_name
 			ORDER BY member DESC
 			
+![image](https://user-images.githubusercontent.com/73856609/213006102-84fd8d00-ec58-4606-95d7-6dec3f3681d8.png)
 			
 
 ## Near the Stations
