@@ -1290,6 +1290,69 @@ d. stations by weekday member
 ![image](https://user-images.githubusercontent.com/73856609/211415359-c4c00643-af57-4176-b059-0afe4ae8f19e.png)
 
 
+e. stations by season
+			
+SELECT	s.start_station_name
+			,s.station_rnk
+			,s.station
+			,sp.spring_rnk
+			,su.summer_rnk
+			,f.fall_rnk
+			,w.winter_rnk
+			--,d.weekday_rnk - e.weekend_rnk AS 'weekend_change'
+			FROM
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'station'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'station_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			GROUP BY start_station_name
+			) s
+			LEFT JOIN
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'spring'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'spring_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND season = 'spring'
+			GROUP BY start_station_name
+			) sp ON s.start_station_name = sp.start_station_name
+			LEFT JOIN
+			(
+			SELECT	  start_station_name
+				,COUNT(ride_id) AS 'summer'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'summer_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND season = 'summer'
+			GROUP BY start_station_name
+			) su ON sp.start_station_name = su.start_station_name
+			LEFT JOIN
+			(
+			SELECT	  start_station_name
+				,COUNT(ride_id) AS 'fall'
+			,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'fall_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND season = 'fall'
+			GROUP BY start_station_name
+			) f ON su.start_station_name = f.start_station_name
+			LEFT JOIN
+			(
+			SELECT	  start_station_name
+				,COUNT(ride_id) AS 'winter'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'winter_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND season = 'winter'
+			GROUP BY start_station_name
+			) w ON f.start_station_name = w.start_station_name
+			ORDER BY station DESC
+			
+			
+
 
 ## Near the Stations
 
