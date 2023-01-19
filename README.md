@@ -1383,6 +1383,7 @@ f. stations by season - casual
 			FROM trips
 			WHERE start_station_name IS NOT NULL 
 			AND member_casual = 'casual'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) c
 			JOIN
@@ -1392,6 +1393,7 @@ f. stations by season - casual
 				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'station_rnk'
 			FROM trips
 			WHERE start_station_name IS NOT NULL 
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) s ON c.start_station_name = s.start_station_name
 			JOIN
@@ -1403,6 +1405,7 @@ f. stations by season - casual
 			WHERE start_station_name IS NOT NULL 
 			AND season = 'spring'
 			AND member_casual = 'casual'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) sp ON s.start_station_name = sp.start_station_name
 			JOIN
@@ -1414,6 +1417,7 @@ f. stations by season - casual
 			WHERE start_station_name IS NOT NULL 
 			AND season = 'summer'
 			AND member_casual = 'casual'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) su ON sp.start_station_name = su.start_station_name
 			JOIN
@@ -1425,6 +1429,7 @@ f. stations by season - casual
 			WHERE start_station_name IS NOT NULL 
 			AND season = 'fall'
 			AND member_casual = 'casual'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) f ON su.start_station_name = f.start_station_name
 			JOIN
@@ -1436,12 +1441,13 @@ f. stations by season - casual
 			WHERE start_station_name IS NOT NULL 
 			AND season = 'winter'
 			AND member_casual = 'casual'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) w ON f.start_station_name = w.start_station_name
 			ORDER BY casual DESC
 			
 
-![image](https://user-images.githubusercontent.com/73856609/213005370-1e3894d6-ab63-4522-9241-c8c6518e5eb5.png)
+![image](https://user-images.githubusercontent.com/73856609/213565850-78c7118e-40b9-4f47-8d21-dc34e2dd9d35.png)
 
 
 g. stations by season - member
