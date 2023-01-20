@@ -1533,6 +1533,133 @@ g. stations by season - member
 			
 ![image](https://user-images.githubusercontent.com/73856609/213006102-84fd8d00-ec58-4606-95d7-6dec3f3681d8.png)
 			
+### Part of Day
+
+a. station by part of the day
+
+			SELECT	s.start_station_name
+				,s.station_rnk
+				,s.station
+				,mn.Middle_of_the_night_rnk
+				--,FORMAT(mn.Middle_of_the_night*1.0 / s.station, 'P') AS 'Middle_of_the_night_p'
+				,em.Early_Morning_rnk
+				--,FORMAT(em.Early_Morning*1.0 / s.station, 'P') AS 'Early_Morning_rnk_p'
+				,m.Morning_rnk
+				--,FORMAT(m.Morning*1.0 / s.station, 'P') AS 'Morning_rnk_p'
+				,lm.Late_Morning_rnk
+				--,FORMAT(lm.Late_Morning*1.0 / s.station, 'P') AS 'Late_Morning_rnk_p'
+				,a.Afternoon_rnk
+				--,FORMAT(a.Afternoon*1.0 / s.station, 'P') AS 'Afternoon_rnk_p'
+				,la.Late_Afternoon_rnk
+				--,FORMAT(la.Late_Afternoon*1.0 / s.station, 'P') AS 'Late_Afternoon_rnk_p'
+				,e.Evening_rnk
+				--,FORMAT(e.Evening*1.0 / s.station, 'P') AS 'Evening_rnk_p'
+				,n.Night_rnk
+				--,FORMAT(n.Night*1.0 / s.station, 'P') AS 'Night_rnk_p'
+			FROM
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'station'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'station_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND no_ride = '0'
+			GROUP BY start_station_name
+			) s
+			LEFT JOIN
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'Middle_of_the_night'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'Middle_of_the_night_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND day_part = '0.Middle of the night'
+			AND no_ride = '0'
+			GROUP BY start_station_name
+			) mn ON s.start_station_name = mn.start_station_name
+			LEFT JOIN
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'Early_Morning'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'Early_Morning_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND day_part = '1.Early Morning'
+			AND no_ride = '0'
+			GROUP BY start_station_name
+			) em ON mn.start_station_name = em.start_station_name
+			LEFT JOIN
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'Morning'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'Morning_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND day_part = '2.Morning'
+			AND no_ride = '0'
+			GROUP BY start_station_name
+			) m ON em.start_station_name = m.start_station_name
+			LEFT JOIN
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'Late_Morning'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'Late_Morning_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND day_part = '3.Late Morning'
+			AND no_ride = '0'
+			GROUP BY start_station_name
+			) lm ON m.start_station_name = lm.start_station_name
+			LEFT JOIN
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'Afternoon'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'Afternoon_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND day_part = '4.Afternoon'
+			AND no_ride = '0'
+			GROUP BY start_station_name
+			) a ON lm.start_station_name = a.start_station_name
+			LEFT JOIN
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'Late_Afternoon'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'Late_Afternoon_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND day_part = '5.Late Afternoon'
+			AND no_ride = '0'
+			GROUP BY start_station_name
+			) la  ON a.start_station_name = la.start_station_name
+			LEFT JOIN 
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'Evening'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'Evening_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND day_part = '6.Evening'
+			AND no_ride = '0'
+			GROUP BY start_station_name
+			) e ON la.start_station_name = e.start_station_name
+			LEFT JOIN
+			(
+			SELECT start_station_name
+				,COUNT(ride_id) AS 'Night'
+				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'Night_rnk'
+			FROM trips
+			WHERE start_station_name IS NOT NULL 
+			AND day_part = '7.Night'
+			AND no_ride = '0'
+			GROUP BY start_station_name
+			) n ON e.start_station_name = n.start_station_name
+			ORDER BY station DESC	
+			
+			
+
+![image](https://user-images.githubusercontent.com/73856609/213590112-8d1dbc90-a829-489d-bcc1-0c9359a94790.png)
+
 
 ## Near the Stations
 
