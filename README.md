@@ -1066,11 +1066,19 @@ the number of stations is:
 		SELECT	 COUNT(DISTINCT start_station_name) AS 'Total_start_stations'
 			,COUNT(DISTINCT end_station_name) AS 'Total_end_stations'
 		FROM 	 trips
+		
+		SELECT	 COUNT(DISTINCT start_station_name) AS 'Total_start_stations'
+			,COUNT(DISTINCT end_station_name) AS 'Total_end_stations'
+		FROM 	 trips
+		WHERE no_ride = 0
 
 
 
-	
+all atations:	
 ![image](https://user-images.githubusercontent.com/73856609/211014914-dd206105-a99e-43d4-81f5-4d65336e8380.png)
+stations:
+![image](https://user-images.githubusercontent.com/73856609/213883862-27a2160c-510a-48fa-8c35-2b72c6aec6fb.png)
+
 
 a. top stations
 		
@@ -1079,13 +1087,13 @@ a. top stations
 			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
 		FROM trips
 		WHERE start_station_name IS NOT NULL
+		AND no_ride = 0
 		GROUP BY start_station_name
 		ORDER BY rides_per_station DESC
 	
 	
 
-	
-![image](https://user-images.githubusercontent.com/73856609/211015115-0e3eaa16-7959-41eb-8d89-3e7d039cdd50.png)
+![image](https://user-images.githubusercontent.com/73856609/213883920-5041a601-240c-4fed-a8ff-572cda376b3c.png)
 	
 b. stations by membership
 
@@ -1103,6 +1111,7 @@ b. stations by membership
 			,COUNT(ride_id) AS 'station'
 		FROM trips
 		WHERE start_station_name IS NOT NULL 
+		      AND no_ride = 0
 		GROUP BY start_station_name
 		)s 
 		JOIN
@@ -1113,6 +1122,7 @@ b. stations by membership
 		FROM trips
 		WHERE start_station_name IS NOT NULL 
 		      AND member_casual = 'casual'
+		      AND no_ride = 0
 		GROUP BY start_station_name
 		) c ON s.start_station_name = c.start_station_name
 		JOIN
@@ -1123,13 +1133,14 @@ b. stations by membership
 		FROM trips
 		WHERE start_station_name IS NOT NULL 
 		      AND member_casual = 'member'
+		      AND no_ride = 0
 		GROUP BY start_station_name
 		) m
 		ON c.start_station_name = m.start_station_name
 		ORDER BY s.station DESC
 	
 
-![image](https://user-images.githubusercontent.com/73856609/211408735-366f4278-d691-4dc7-9a83-9edf9e9311b2.png)
+![image](https://user-images.githubusercontent.com/73856609/213884011-0ce4f53d-eecc-41f8-9a4e-ffe6c414ee77.png)
 
 
 
@@ -1150,6 +1161,7 @@ c. stations by weekday - weekend
 			,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'station_rnk'
 		FROM trips
 		WHERE start_station_name IS NOT NULL 
+		      AND no_ride = 0
 		GROUP BY start_station_name
 		) s
 		JOIN
@@ -1160,6 +1172,7 @@ c. stations by weekday - weekend
 		FROM trips
 		WHERE start_station_name IS NOT NULL 
 		AND ride_weekday  IN (2,3,4,5)
+		AND no_ride = 0
 		GROUP BY start_station_name
 		) d ON s.start_station_name = d.start_station_name
 		JOIN
@@ -1170,12 +1183,13 @@ c. stations by weekday - weekend
 		FROM trips
 		WHERE start_station_name IS NOT NULL 
 		AND ride_weekday  IN (6,7,1)
+		AND no_ride = 0
 		GROUP BY start_station_name
 		) e ON d.start_station_name = e.start_station_name
 		ORDER BY station DESC
 
 
-![image](https://user-images.githubusercontent.com/73856609/211410827-6071e3e9-019d-4b00-95ab-748f537f2b94.png)
+![image](https://user-images.githubusercontent.com/73856609/213884417-051853f7-483d-4e9e-b08c-08cf79956cbb.png)
 
 
 d. stations by weekday casual
@@ -1193,7 +1207,8 @@ d. stations by weekday casual
 				,COUNT(ride_id) AS 'station'
 				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'station_rnk'
 			FROM trips
-			WHERE start_station_name IS NOT NULL 
+			WHERE start_station_name IS NOT NULL
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) s
 			JOIN
@@ -1204,6 +1219,7 @@ d. stations by weekday casual
 			FROM trips
 			WHERE start_station_name IS NOT NULL 
 			AND member_casual = 'casual'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) c ON s.start_station_name = c.start_station_name
 			JOIN
@@ -1215,6 +1231,7 @@ d. stations by weekday casual
 			WHERE start_station_name IS NOT NULL 
 			AND ride_weekday  IN (2,3,4,5)
 			AND member_casual = 'casual'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) d ON c.start_station_name = d.start_station_name
 			JOIN
@@ -1226,12 +1243,13 @@ d. stations by weekday casual
 			WHERE start_station_name IS NOT NULL 
 			AND ride_weekday  IN (6,7,1)
 			AND member_casual = 'casual'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) e ON d.start_station_name = e.start_station_name
 			ORDER BY casual DESC
 			
 
-![image](https://user-images.githubusercontent.com/73856609/211414635-5d49fbc0-d576-481d-9be1-f4f03583a54e.png)
+![image](https://user-images.githubusercontent.com/73856609/213884473-439ea870-2387-45d3-a445-650ce181672b.png)
 
 d. stations by weekday member
 
@@ -1250,6 +1268,7 @@ d. stations by weekday member
 				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'station_rnk'
 			FROM trips
 			WHERE start_station_name IS NOT NULL 
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) s
 			JOIN
@@ -1260,6 +1279,7 @@ d. stations by weekday member
 			FROM trips
 			WHERE start_station_name IS NOT NULL 
 			AND member_casual = 'member'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) c ON s.start_station_name = c.start_station_name
 			JOIN
@@ -1271,6 +1291,7 @@ d. stations by weekday member
 			WHERE start_station_name IS NOT NULL 
 			AND ride_weekday  IN (2,3,4,5)
 			AND member_casual = 'member'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) d ON c.start_station_name = d.start_station_name
 			JOIN
@@ -1282,12 +1303,13 @@ d. stations by weekday member
 			WHERE start_station_name IS NOT NULL 
 			AND ride_weekday  IN (6,7,1)
 			AND member_casual = 'member'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) e ON d.start_station_name = e.start_station_name
 			ORDER BY member DESC
 			
 			
-![image](https://user-images.githubusercontent.com/73856609/211415359-c4c00643-af57-4176-b059-0afe4ae8f19e.png)
+![image](https://user-images.githubusercontent.com/73856609/213884542-914d9f69-3c94-47a4-a183-31010f3ffedc.png)
 
 
 e. stations by season
@@ -1309,7 +1331,8 @@ e. stations by season
 				,COUNT(ride_id) AS 'station'
 				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'station_rnk'
 			FROM trips
-			WHERE start_station_name IS NOT NULL 
+			WHERE start_station_name IS NOT NULL
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) s
 			LEFT JOIN
@@ -1320,6 +1343,7 @@ e. stations by season
 			FROM trips
 			WHERE start_station_name IS NOT NULL 
 			AND season = 'spring'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) sp ON s.start_station_name = sp.start_station_name
 			LEFT JOIN
@@ -1330,6 +1354,7 @@ e. stations by season
 			FROM trips
 			WHERE start_station_name IS NOT NULL 
 			AND season = 'summer'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) su ON sp.start_station_name = su.start_station_name
 			LEFT JOIN
@@ -1340,6 +1365,7 @@ e. stations by season
 			FROM trips
 			WHERE start_station_name IS NOT NULL 
 			AND season = 'fall'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) f ON su.start_station_name = f.start_station_name
 			LEFT JOIN
@@ -1350,12 +1376,13 @@ e. stations by season
 			FROM trips
 			WHERE start_station_name IS NOT NULL 
 			AND season = 'winter'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) w ON f.start_station_name = w.start_station_name
 			ORDER BY station DESC
 			
 			
-![image](https://user-images.githubusercontent.com/73856609/212997231-277b56ac-0133-47ad-8064-714692097c4b.png)
+![image](https://user-images.githubusercontent.com/73856609/213884603-eadae394-c32c-46d1-a410-66c89eeabbca.png)
 
 
 f. stations by season - casual
