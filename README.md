@@ -1843,6 +1843,11 @@ b. station by part of the day - casual
 	
 c. station by part of the day - members
 
+## Quick Analysis – stations
+In the database there are 713 stations but only 710 count for the analysis with three stations not in the final analysis and are characterized as test rides
+- The top start stations differ between the casual and annual riders The top start stations - Streeter Dr & Grand Ave and Lake Shore Dr & Monroe St are ranked one and two for casual riders but ranked 24th and 41st by annual riders
+- In the top 30 start stations, Theater on the Lake and Clark St & Lincoln Ave stations have a similar rank by casual and annual riders (5th - 4th and 14th - 13th )
+- Weekdays and weekends are the same top stations for casual riders. For annual rides excluding the top two member start stations other stations differ between weekdays and weekends with St. Clair St & Erie St station dropping 43 ranks between weekdays and weekends
 
 ## Near the Stations
 
