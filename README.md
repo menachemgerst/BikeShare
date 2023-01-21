@@ -1501,6 +1501,7 @@ g. stations by season - member
 			FROM trips
 			WHERE start_station_name IS NOT NULL 
 			AND member_casual = 'member'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) c
 			JOIN
@@ -1510,6 +1511,7 @@ g. stations by season - member
 				,ROW_NUMBER() OVER (ORDER BY COUNT(ride_id) DESC) AS 'station_rnk'
 			FROM trips
 			WHERE start_station_name IS NOT NULL 
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) s ON c.start_station_name = s.start_station_name
 			JOIN
@@ -1521,6 +1523,7 @@ g. stations by season - member
 			WHERE start_station_name IS NOT NULL 
 			AND season = 'spring'
 			AND member_casual = 'member'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) sp ON s.start_station_name = sp.start_station_name
 			JOIN
@@ -1532,6 +1535,7 @@ g. stations by season - member
 			WHERE start_station_name IS NOT NULL 
 			AND season = 'summer'
 			AND member_casual = 'member'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) su ON sp.start_station_name = su.start_station_name
 			JOIN
@@ -1543,6 +1547,7 @@ g. stations by season - member
 			WHERE start_station_name IS NOT NULL 
 			AND season = 'fall'
 			AND member_casual = 'member'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) f ON su.start_station_name = f.start_station_name
 			JOIN
@@ -1554,11 +1559,11 @@ g. stations by season - member
 			WHERE start_station_name IS NOT NULL 
 			AND season = 'winter'
 			AND member_casual = 'member'
+			AND no_ride = 0
 			GROUP BY start_station_name
 			) w ON f.start_station_name = w.start_station_name
 			ORDER BY member DESC
 			
-![image](https://user-images.githubusercontent.com/73856609/213006102-84fd8d00-ec58-4606-95d7-6dec3f3681d8.png)
 			
 ### Part of Day
 
