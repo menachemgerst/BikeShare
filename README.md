@@ -1563,8 +1563,11 @@ g. stations by season - member
 			GROUP BY start_station_name
 			) w ON f.start_station_name = w.start_station_name
 			ORDER BY member DESC
-			
-			
+
+
+![image](https://user-images.githubusercontent.com/73856609/213885026-eec2c4fc-b748-4ed5-8610-2ab6b00ffbf2.png)
+
+
 ### Part of Day
 
 a. station by part of the day
