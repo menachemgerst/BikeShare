@@ -1845,9 +1845,11 @@ c. station by part of the day - members
 
 ## Quick Analysis – stations
 In the database there are 713 stations but only 710 count for the analysis with three stations not in the final analysis and are characterized as test rides
-- The top start stations differ between the casual and annual riders The top start stations - Streeter Dr & Grand Ave and Lake Shore Dr & Monroe St are ranked one and two for casual riders but ranked 24th and 41st by annual riders
+•	The top start stations differ between the casual and annual riders, the top start stations - Streeter Dr & Grand Ave and Lake Shore Dr , Monroe St & Millennium Park are ranked one, two and three for casual riders but ranked 24th ,41st  and 143rd by annual riders
 - In the top 30 start stations, Theater on the Lake and Clark St & Lincoln Ave stations have a similar rank by casual and annual riders (5th - 4th and 14th - 13th )
-- Weekdays and weekends are the same top stations for casual riders. For annual rides excluding the top two member start stations other stations differ between weekdays and weekends with St. Clair St & Erie St station dropping 43 ranks between weekdays and weekends
+- Weekdays and weekends are the same top stations for casual riders. For annual rides excluding the top two start stations all other start stations differ between weekdays and weekends with St. Clair St & Erie St station dropping 43 ranks between weekdays and weekends
+- Seasons are mostly the same. for annual members, the top start stations are roughly the same amount with a small decrease in the summer (Kingsbury St & Kinzie St dropping from ranked 3rd to 7th , Wells St & Elm St dropping from 4th to 13th ). Casual members ride roughly the same amount from the top start stations all year round. In the second tier of start stations there is an increase in station rank in the fall and winter and it might be explained by the drop in total rides by casual riders during the fall and winter and the rides from those start stations being a higher percent of total casual rides 
+
 
 ## Near the Stations
 
