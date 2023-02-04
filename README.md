@@ -1973,8 +1973,14 @@ In the database there are 713 stations but only 710 count for the analysis with 
 - During the day the start station rank changes, for casual members the top stations are popular during the late morning hours through the afternoon and evening (Streeter Dr & Grand Ave , Lake Shore Dr and Monroe St , Millennium Park) but drop significantly during the middle of the night and the morning hours. For annual members with the exception of Clark St & Elm St that is ranked one and two all day and night the top ranked start stations change during the day, Theater on the Lake is ranked an average of two during from the late morning till the evening and drops to an average rank of 100 during the night and early morning hours 
 
 
-## Near the Stations
+## Concultion (part one)
+In this analysis we defined the characteristics of the two types of membership riders, tha anual riders and the casual rider.
+the anual members use the bikes for there regular routines - ride all year round going to work or school and using the bikes for shorter rides, and mostly on weekdays.
+the casual members go on longer rides, ride more on weekends and during non work hours and hvae the same popular stations durig all different parts of the day, day of the week and seasons.
 
-## Ride Disstance
+the next steps of the analysis will include ride disstance by KM/MI, station clusters and near by sites to the stations. a
 
-## Concultion 
+
+### Near the Stations
+
+### Ride Disstance
