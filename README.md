@@ -1976,8 +1976,8 @@ In the database there are 713 stations but only 710 count for the analysis with 
 ## Concultion (part one)
 In this analysis we defined the characteristics of the two types of membership riders, tha anual riders and the casual rider.
 
-•	the anual members use the bikes for there regular routines - ride all year round going to work or school and using the bikes for shorter rides, and mostly on weekdays.
-•	the casual members go on longer rides, ride more on weekends and during non work hours and hvae the same popular stations durig all different parts of the day, day of the week and seasons.
+• the anual members use the bikes for there regular routines - ride all year round going to work or school and using the bikes for shorter rides, and mostly on weekdays.
+• the casual members go on longer rides, ride more on weekends and during non work hours and hvae the same popular stations durig all different parts of the day, day of the week and seasons.
 
 
 the next steps of the analysis will include ride disstance by KM/MI, station clusters and near by sites to the stations. a
