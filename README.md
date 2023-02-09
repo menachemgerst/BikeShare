@@ -1963,7 +1963,7 @@ c. station by part of the day - members
 			
 ![image](https://user-images.githubusercontent.com/73856609/214695383-b7505951-2cd6-4d16-9e49-0d74a593e636.png)
 
-<iframe title="Report Section" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiMDYzY2Q3YzEtYzNjNS00MTE2LWE3YWQtMWU5ZDE0YTIyMzdhIiwidCI6IjlhMWU5ZmRmLTkyNmUtNDY4Mi04N2M4LTdlMTg4NDBkYTE3NiJ9" frameborder="0" allowFullScreen="true"></iframe>
+shorturl.at/bstFH
 
 ![image](https://user-images.githubusercontent.com/73856609/217914399-5ac9ab3f-ed03-4119-bddd-b4747533fe75.png)
 
