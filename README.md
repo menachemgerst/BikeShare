@@ -1963,6 +1963,8 @@ c. station by part of the day - members
 			
 ![image](https://user-images.githubusercontent.com/73856609/214695383-b7505951-2cd6-4d16-9e49-0d74a593e636.png)
 
+https://app.powerbi.com/reportEmbed?reportId=33450610-17b0-4cfc-8e23-a1be73eaaf6c&autoAuth=true&ctid=9a1e9fdf-926e-4682-87c8-7e18840da176
+
 
 ## Quick Analysis – stations
 In the database there are 713 stations but only 710 count for the analysis with three stations not in the final analysis and are characterized as test rides
