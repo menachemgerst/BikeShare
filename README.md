@@ -1047,14 +1047,14 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 ### Quick Analysis
 
 over 12 month 4,460,151 rides were recorded, 38,383 are not in the analysis (test rides, zero minutes or bad data) and 4,421,768 rides are in the final analysis (column name = 'no_ride')
-- anual members are 56% of total rides
-- anual riders ride an average of 15 minutes to an average of 40 minutes by casual riders
-- riders (both members and casual riders) prefer the regualr bike (75%) over the electric bikes (25%)
+- annual members are 56% of total rides
+- annual riders ride an average of 15 minutes to an average of 40 minutes by casual riders
+- riders (both annual and casual riders) prefer the regualr bike (75%) over the electric bikes (25%)
 - casual riders ride more on weekends  - 57% of casual rides are on Fri-Sun. 
-- anual riders ride a little bit more on weekends but not significantly
+- annual riders ride a little bit more on weekends but not significantly
 - when it's cold the number of rides drop - 73% of the rides or in the spring and summer
 - the number of casual riders drops in the winter, only 25% of the rides in the winter are by casual riders
-- between 10:00 and 21:00 the casual and anual riders use the bikes the same. members ride more in the earler morning hours (05:00 - 10:00, 70% + of the rides), and casual riders like the late hours more (21:00-05:00, 60% +/- of the rides)
+- between 10:00 and 21:00 the casual and annual riders use the bikes the same. members ride more in the earler morning hours (05:00 - 10:00, 70% + of the rides), and casual riders like the late hours more (21:00-05:00, 60% +/- of the rides)
 
 
 ## Further Analysis - Stations
