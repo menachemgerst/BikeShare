@@ -27,10 +27,10 @@ there is a very good chance to convert casual riders into members.
 1. To identify the differences between the types of riders membership - casual vs. annual
 2. To identify the high and low usage of the bikes during the day, week and year (including differences between membership)
 3. To identify the popular (and not popular) stations and riding ereas (including differences between membership)
-Answering these three questions can help build a new stratgy fo convert casual to annual riders
+Answering these three questions can help build a new stratgy to convert casual to annual riders
 
 ### The Data
-The data contains all the rides recorded in 12 month. the data of each use of a bike is recorderd and stored in the DWH. 
+The data contains all the rides recorded in 12 month period. the data of each use of a bike is recorderd and stored in the DWH. 
 The data is then uploaded to a public server and can be accesed at this site: https://divvy-tripdata.s3.amazonaws.com/index.html
 This analysis will refer to the rides taken between July 2020 and June 2021. 
 In further analysis will analyze longer time periods and try to identify and predict types of riders, bikes and other information to improve the service and plans.
@@ -57,7 +57,7 @@ In further analysis will analyze longer time periods and try to identify and pre
 		PIVOT (COUNT(table_name) FOR data_type IN ([nvarchar],[float],[datetime]))AS PVT
 
 
-the query shows us that not all the columns in the db have the same data type and they need to be altered inorder to ba able to inserte all the tables into one main table.
+the query shows us that not all the columns in the db have the same data type and they need to be altered in order to ba able to inserte all the tables into one main table.
 
 2. data altering
 
@@ -75,7 +75,7 @@ the query shows us that not all the columns in the db have the same data type an
 		) AS tbl
 		 WHERE station > 1
 	
-sinch the quey returned zero rows we can understand that stations ID's with letters or distinctandcan't be replaced with existing FLOAT ID's)
+sinch the quey returned zero rows we can understand that stations ID's with letters or distinct and can't be replaced with existing FLOAT ID's)
 	
 Query for altering start_station_id data type to all be the same (varchar):
 	
