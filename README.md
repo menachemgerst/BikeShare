@@ -9,6 +9,22 @@ First method – special annual packages for short time periods (weeklong, seaso
 
 Second method – advertise in the suburbs targeting the casual riders that may not use the bikes as frequently as the annual riders but also don't have the same characteristics as the average casual riders. 
 
+### Limitations 
+
+-	The data does not include any type of distinct users (via paying methods) and demographic information about the users (sex, age occupation etc.) that can shed light about the characteristics of the different users. 
+
+
+### Further analysis
+
+-	Calculation of ride distance, routes, and station clusters for creating location packages (using python pandas)
+-	With taking into consideration the method of creating packages a further analysis will try to include data about weather, distance from areas of interest, yearly events (Christmas, sporting events etc.) to deeply understand the characteristics of the rides.
+
+
+
+
+
+
+## Full Analysis Report 
 
 ## Introduction 
 ### About
