@@ -210,671 +210,720 @@ and for altering end_station_id data type to all be the same (varchar):
 using UNION ALL for each one of the twelve tables and creating all the indicators
 
 		
-	WITH CTE AS
-	(
-	SELECT	 ride_id
-			,rideable_type
-			,started_at
-			,ended_at
-			,start_station_name
-			,start_station_id
-			,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
-			,end_station_name
-			,end_station_id
-			,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
-			,member_casual
-			,DATEDIFF(mi,started_at,ended_at) AS ride_time
-			,DATEPART(HOUR, started_at) AS hour_ride
-			,DATEPART(WEEKDAY, started_at) AS ride_weekday
-			,DATENAME(WEEKDAY, started_at) AS ride_weekday_name
-			,DATEPART(MONTH, started_at) AS month
-			,DATENAME(MONTH, started_at) AS month_name
-			,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN '1.Early Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN '2.Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN '3.Late Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN '4.Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN '5.Late Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN '6.Evening'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) = 00 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN '0.Middle of the night'
-			 END AS 'day_part'
-			,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
-					 OR (MONTH(started_at) = 4)
-					 OR (MONTH(started_at) = 5)
-					 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 'Spring'
-				  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 7)
-					 OR (MONTH(started_at) = 8)
-					 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 'Summer'
-				  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
-					 OR (MONTH(started_at) = 10)
-					 OR (MONTH(started_at) = 11)
-					 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 'Fall'
-				  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 1)
-					 OR (MONTH(started_at) = 2)
-					 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
-			 END AS 'season'
-			,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
-	 			  WHEN ended_at < started_at THEN 2
-				  WHEN start_station_name LIKE '%test%' 
-	 				OR start_station_name LIKE '%CHECK%' 
-	 				OR end_station_name LIKE '%test%' 
-	 				OR end_station_name LIKE '%CHECK%' THEN 3
-	 			  ELSE 0 
-	 		  END AS 'no_ride'
-			 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
-	FROM trips202007
-	UNION ALL
-	SELECT	 ride_id
-			,rideable_type
-			,started_at
-			,ended_at
-			,start_station_name
-			,start_station_id
-			,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
-			,end_station_name
-			,end_station_id
-			,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
-			,member_casual
-			,DATEDIFF(mi,started_at,ended_at) AS ride_time
-			,DATEPART(HOUR, started_at) AS hour_ride
-			,DATEPART(WEEKDAY, started_at) AS ride_weekday
-			,DATENAME(WEEKDAY, started_at) AS ride_weekday_name
-			,DATEPART(MONTH, started_at) AS month
-			,DATENAME(MONTH, started_at) AS month_name
-			,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN '1.Early Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN '2.Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN '3.Late Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN '4.Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN '5.Late Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN '6.Evening'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) = 00 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN '0.Middle of the night'
-			 END AS 'day_part'
-			,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
-					 OR (MONTH(started_at) = 4)
-					 OR (MONTH(started_at) = 5)
-					 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 'Spring'
-				  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 7)
-					 OR (MONTH(started_at) = 8)
-					 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 'Summer'
-				  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
-					 OR (MONTH(started_at) = 10)
-					 OR (MONTH(started_at) = 11)
-					 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 'Fall'
-				  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 1)
-					 OR (MONTH(started_at) = 2)
-					 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
-			 END AS 'season'
-			,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
-	 			  WHEN ended_at < started_at THEN 2
-				  WHEN start_station_name LIKE '%test%' 
-	 				OR start_station_name LIKE '%CHECK%' 
-	 				OR end_station_name LIKE '%test%' 
-	 				OR end_station_name LIKE '%CHECK%' THEN 3
-	 			  ELSE 0 
-	 		  END AS 'no_ride'
-			 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
-	FROM trips202008
-	UNION ALL
-	SELECT	 ride_id
-			,rideable_type
-			,started_at
-			,ended_at
-			,start_station_name
-			,start_station_id
-			,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
-			,end_station_name
-			,end_station_id
-			,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
-			,member_casual
-			,DATEDIFF(mi,started_at,ended_at) AS ride_time
-			,DATEPART(HOUR, started_at) AS hour_ride
-			,DATEPART(WEEKDAY, started_at) AS ride_weekday
-			,DATENAME(WEEKDAY, started_at) AS ride_weekday_name
-			,DATEPART(MONTH, started_at) AS month
-			,DATENAME(MONTH, started_at) AS month_name
-			,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN '1.Early Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN '2.Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN '3.Late Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN '4.Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN '5.Late Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN '6.Evening'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) = 00 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN '0.Middle of the night'
-			 END AS 'day_part'
-			,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
-					 OR (MONTH(started_at) = 4)
-					 OR (MONTH(started_at) = 5)
-					 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 'Spring'
-				  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 7)
-					 OR (MONTH(started_at) = 8)
-					 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 'Summer'
-				  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
-					 OR (MONTH(started_at) = 10)
-					 OR (MONTH(started_at) = 11)
-					 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 'Fall'
-				  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 1)
-					 OR (MONTH(started_at) = 2)
-					 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
-			 END AS 'season'
-			,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
-	 			  WHEN ended_at < started_at THEN 2
-				  WHEN start_station_name LIKE '%test%' 
-	 				OR start_station_name LIKE '%CHECK%' 
-	 				OR end_station_name LIKE '%test%' 
-	 				OR end_station_name LIKE '%CHECK%' THEN 3
-	 			  ELSE 0 
-	 		  END AS 'no_ride'
-			 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
-	FROM trips202009
-	UNION ALL
-	SELECT	 ride_id
-			,rideable_type
-			,started_at
-			,ended_at
-			,start_station_name
-			,start_station_id
-			,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
-			,end_station_name
-			,end_station_id
-			,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
-			,member_casual
-			,DATEDIFF(mi,started_at,ended_at) AS ride_time
-			,DATEPART(HOUR, started_at) AS hour_ride
-			,DATEPART(WEEKDAY, started_at) AS ride_weekday
-			,DATENAME(WEEKDAY, started_at) AS ride_weekday_name
-			,DATEPART(MONTH, started_at) AS month
-			,DATENAME(MONTH, started_at) AS month_name
-			,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN '1.Early Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN '2.Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN '3.Late Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN '4.Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN '5.Late Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN '6.Evening'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) = 00 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN '0.Middle of the night'
-			 END AS 'day_part'
-			,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
-					 OR (MONTH(started_at) = 4)
-					 OR (MONTH(started_at) = 5)
-					 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 'Spring'
-				  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 7)
-					 OR (MONTH(started_at) = 8)
-					 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 'Summer'
-				  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
-					 OR (MONTH(started_at) = 10)
-					 OR (MONTH(started_at) = 11)
-					 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 'Fall'
-				  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 1)
-					 OR (MONTH(started_at) = 2)
-					 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
-			 END AS 'season'
-			,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
-	 			  WHEN ended_at < started_at THEN 2
-				  WHEN start_station_name LIKE '%test%' 
-	 				OR start_station_name LIKE '%CHECK%' 
-	 				OR end_station_name LIKE '%test%' 
-	 				OR end_station_name LIKE '%CHECK%' THEN 3
-	 			  ELSE 0 
-	 		  END AS 'no_ride'
-			 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
-	FROM trips202010
-	UNION ALL
-	SELECT	 ride_id
-			,rideable_type
-			,started_at
-			,ended_at
-			,start_station_name
-			,start_station_id
-			,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
-			,end_station_name
-			,end_station_id
-			,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
-			,member_casual
-			,DATEDIFF(mi,started_at,ended_at) AS ride_time
-			,DATEPART(HOUR, started_at) AS hour_ride
-			,DATEPART(WEEKDAY, started_at) AS ride_weekday
-			,DATENAME(WEEKDAY, started_at) AS ride_weekday_name
-			,DATEPART(MONTH, started_at) AS month
-			,DATENAME(MONTH, started_at) AS month_name
-			,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN '1.Early Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN '2.Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN '3.Late Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN '4.Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN '5.Late Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN '6.Evening'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) = 00 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN '0.Middle of the night'
-			 END AS 'day_part'
-			,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
-					 OR (MONTH(started_at) = 4)
-					 OR (MONTH(started_at) = 5)
-					 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 'Spring'
-				  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 7)
-					 OR (MONTH(started_at) = 8)
-					 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 'Summer'
-				  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
-					 OR (MONTH(started_at) = 10)
-					 OR (MONTH(started_at) = 11)
-					 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 'Fall'
-				  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 1)
-					 OR (MONTH(started_at) = 2)
-					 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
-			 END AS 'season'
-			,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
-	 			  WHEN ended_at < started_at THEN 2
-				  WHEN start_station_name LIKE '%test%' 
-	 				OR start_station_name LIKE '%CHECK%' 
-	 				OR end_station_name LIKE '%test%' 
-	 				OR end_station_name LIKE '%CHECK%' THEN 3
-	 			  ELSE 0 
-	 		  END AS 'no_ride'
-			 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
-	FROM trips202011
-	UNION ALL
-	SELECT	 ride_id
-			,rideable_type
-			,started_at
-			,ended_at
-			,start_station_name
-			,start_station_id
-			,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
-			,end_station_name
-			,end_station_id
-			,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
-			,member_casual
-			,DATEDIFF(mi,started_at,ended_at) AS ride_time
-			,DATEPART(HOUR, started_at) AS hour_ride
-			,DATEPART(WEEKDAY, started_at) AS ride_weekday
-			,DATENAME(WEEKDAY, started_at) AS ride_weekday_name
-			,DATEPART(MONTH, started_at) AS month
-			,DATENAME(MONTH, started_at) AS month_name
-			,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN '1.Early Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN '2.Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN '3.Late Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN '4.Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN '5.Late Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN '6.Evening'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) = 00 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN '0.Middle of the night'
-			 END AS 'day_part'
-			,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
-					 OR (MONTH(started_at) = 4)
-					 OR (MONTH(started_at) = 5)
-					 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 'Spring'
-				  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 7)
-					 OR (MONTH(started_at) = 8)
-					 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 'Summer'
-				  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
-					 OR (MONTH(started_at) = 10)
-					 OR (MONTH(started_at) = 11)
-					 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 'Fall'
-				  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 1)
-					 OR (MONTH(started_at) = 2)
-					 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
-			 END AS 'season'
-			,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
-	 			  WHEN ended_at < started_at THEN 2
-				  WHEN start_station_name LIKE '%test%' 
-	 				OR start_station_name LIKE '%CHECK%' 
-	 				OR end_station_name LIKE '%test%' 
-	 				OR end_station_name LIKE '%CHECK%' THEN 3
-	 			  ELSE 0 
-	 		  END AS 'no_ride'
-			 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
-	FROM trips202012
-	UNION ALL
-	SELECT	 ride_id
-			,rideable_type
-			,started_at
-			,ended_at
-			,start_station_name
-			,start_station_id
-			,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
-			,end_station_name
-			,end_station_id
-			,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
-			,member_casual
-			,DATEDIFF(mi,started_at,ended_at) AS ride_time
-			,DATEPART(HOUR, started_at) AS hour_ride
-			,DATEPART(WEEKDAY, started_at) AS ride_weekday
-			,DATENAME(WEEKDAY, started_at) AS ride_weekday_name
-			,DATEPART(MONTH, started_at) AS month
-			,DATENAME(MONTH, started_at) AS month_name
-			,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN '1.Early Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN '2.Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN '3.Late Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN '4.Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN '5.Late Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN '6.Evening'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) = 00 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN '0.Middle of the night'
-			 END AS 'day_part'
-			,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
-					 OR (MONTH(started_at) = 4)
-					 OR (MONTH(started_at) = 5)
-					 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 'Spring'
-				  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 7)
-					 OR (MONTH(started_at) = 8)
-					 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 'Summer'
-				  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
-					 OR (MONTH(started_at) = 10)
-					 OR (MONTH(started_at) = 11)
-					 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 'Fall'
-				  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 1)
-					 OR (MONTH(started_at) = 2)
-					 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
-			 END AS 'season'
-			,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
-	 			  WHEN ended_at < started_at THEN 2
-				  WHEN start_station_name LIKE '%test%' 
-	 				OR start_station_name LIKE '%CHECK%' 
-	 				OR end_station_name LIKE '%test%' 
-	 				OR end_station_name LIKE '%CHECK%' THEN 3
-	 			  ELSE 0 
-	 		  END AS 'no_ride'
-			 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
-	FROM trips202101
-	UNION ALL
-	SELECT	 ride_id
-			,rideable_type
-			,started_at
-			,ended_at
-			,start_station_name
-			,start_station_id
-			,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
-			,end_station_name
-			,end_station_id
-			,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
-			,member_casual
-			,DATEDIFF(mi,started_at,ended_at) AS ride_time
-			,DATEPART(HOUR, started_at) AS hour_ride
-			,DATEPART(WEEKDAY, started_at) AS ride_weekday
-			,DATENAME(WEEKDAY, started_at) AS ride_weekday_name
-			,DATEPART(MONTH, started_at) AS month
-			,DATENAME(MONTH, started_at) AS month_name
-			,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN '1.Early Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN '2.Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN '3.Late Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN '4.Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN '5.Late Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN '6.Evening'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) = 00 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN '0.Middle of the night'
-			 END AS 'day_part'
-			,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
-					 OR (MONTH(started_at) = 4)
-					 OR (MONTH(started_at) = 5)
-					 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 'Spring'
-				  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 7)
-					 OR (MONTH(started_at) = 8)
-					 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 'Summer'
-				  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
-					 OR (MONTH(started_at) = 10)
-					 OR (MONTH(started_at) = 11)
-					 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 'Fall'
-				  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 1)
-					 OR (MONTH(started_at) = 2)
-					 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
-			 END AS 'season'
-			,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
-	 			  WHEN ended_at < started_at THEN 2
-				  WHEN start_station_name LIKE '%test%' 
-	 				OR start_station_name LIKE '%CHECK%' 
-	 				OR end_station_name LIKE '%test%' 
-	 				OR end_station_name LIKE '%CHECK%' THEN 3
-	 			  ELSE 0 
-	 		  END AS 'no_ride'
-			 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
-	FROM trips202102
-	UNION ALL
-	SELECT	 ride_id
-			,rideable_type
-			,started_at
-			,ended_at
-			,start_station_name
-			,start_station_id
-			,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
-			,end_station_name
-			,end_station_id
-			,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
-			,member_casual
-			,DATEDIFF(mi,started_at,ended_at) AS ride_time
-			,DATEPART(HOUR, started_at) AS hour_ride
-			,DATEPART(WEEKDAY, started_at) AS ride_weekday
-			,DATENAME(WEEKDAY, started_at) AS ride_weekday_name
-			,DATEPART(MONTH, started_at) AS month
-			,DATENAME(MONTH, started_at) AS month_name
-			,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN '1.Early Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN '2.Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN '3.Late Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN '4.Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN '5.Late Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN '6.Evening'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) = 00 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN '0.Middle of the night'
-			 END AS 'day_part'
-			,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
-					 OR (MONTH(started_at) = 4)
-					 OR (MONTH(started_at) = 5)
-					 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 'Spring'
-				  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 7)
-					 OR (MONTH(started_at) = 8)
-					 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 'Summer'
-				  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
-					 OR (MONTH(started_at) = 10)
-					 OR (MONTH(started_at) = 11)
-					 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 'Fall'
-				  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 1)
-					 OR (MONTH(started_at) = 2)
-					 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
-			 END AS 'season'
-			,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
-	 			  WHEN ended_at < started_at THEN 2
-				  WHEN start_station_name LIKE '%test%' 
-	 				OR start_station_name LIKE '%CHECK%' 
-	 				OR end_station_name LIKE '%test%' 
-	 				OR end_station_name LIKE '%CHECK%' THEN 3
-	 			  ELSE 0 
-	 		  END AS 'no_ride'
-			 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
-	FROM trips202103
-	UNION ALL
-	SELECT	 ride_id
-			,rideable_type
-			,started_at
-			,ended_at
-			,start_station_name
-			,start_station_id
-			,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
-			,end_station_name
-			,end_station_id
-			,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
-			,member_casual
-			,DATEDIFF(mi,started_at,ended_at) AS ride_time
-			,DATEPART(HOUR, started_at) AS hour_ride
-			,DATEPART(WEEKDAY, started_at) AS ride_weekday
-			,DATENAME(WEEKDAY, started_at) AS ride_weekday_name
-			,DATEPART(MONTH, started_at) AS month
-			,DATENAME(MONTH, started_at) AS month_name
-			,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN '1.Early Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN '2.Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN '3.Late Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN '4.Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN '5.Late Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN '6.Evening'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) = 00 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN '0.Middle of the night'
-			 END AS 'day_part'
-			,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
-					 OR (MONTH(started_at) = 4)
-					 OR (MONTH(started_at) = 5)
-					 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 'Spring'
-				  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 7)
-					 OR (MONTH(started_at) = 8)
-					 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 'Summer'
-				  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
-					 OR (MONTH(started_at) = 10)
-					 OR (MONTH(started_at) = 11)
-					 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 'Fall'
-				  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 1)
-					 OR (MONTH(started_at) = 2)
-					 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
-			 END AS 'season'
-			,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
-	 			  WHEN ended_at < started_at THEN 2
-				  WHEN start_station_name LIKE '%test%' 
-	 				OR start_station_name LIKE '%CHECK%' 
-	 				OR end_station_name LIKE '%test%' 
-	 				OR end_station_name LIKE '%CHECK%' THEN 3
-	 			  ELSE 0 
-	 		  END AS 'no_ride'
-			 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
-	FROM trips202104
-	UNION ALL
-	SELECT	 ride_id
-			,rideable_type
-			,started_at
-			,ended_at
-			,start_station_name
-			,start_station_id
-			,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
-			,end_station_name
-			,end_station_id
-			,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
-			,member_casual
-			,DATEDIFF(mi,started_at,ended_at) AS ride_time
-			,DATEPART(HOUR, started_at) AS hour_ride
-			,DATEPART(WEEKDAY, started_at) AS ride_weekday
-			,DATENAME(WEEKDAY, started_at) AS ride_weekday_name
-			,DATEPART(MONTH, started_at) AS month
-			,DATENAME(MONTH, started_at) AS month_name
-			,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN '1.Early Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN '2.Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN '3.Late Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN '4.Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN '5.Late Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN '6.Evening'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) = 00 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN '0.Middle of the night'
-			 END AS 'day_part'
-			,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
-					 OR (MONTH(started_at) = 4)
-					 OR (MONTH(started_at) = 5)
-					 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 'Spring'
-				  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 7)
-					 OR (MONTH(started_at) = 8)
-					 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 'Summer'
-				  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
-					 OR (MONTH(started_at) = 10)
-					 OR (MONTH(started_at) = 11)
-					 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 'Fall'
-				  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 1)
-					 OR (MONTH(started_at) = 2)
-					 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
-			 END AS 'season'
-			,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
-	 			  WHEN ended_at < started_at THEN 2
-				  WHEN start_station_name LIKE '%test%' 
-	 				OR start_station_name LIKE '%CHECK%' 
-	 				OR end_station_name LIKE '%test%' 
-	 				OR end_station_name LIKE '%CHECK%' THEN 3
-	 			  ELSE 0 
-	 		  END AS 'no_ride'
-			 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
-	FROM trips202105
-	UNION ALL
-	SELECT	 ride_id
-			,rideable_type
-			,started_at
-			,ended_at
-			,start_station_name
-			,start_station_id
-			,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
-			,end_station_name
-			,end_station_id
-			,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
-			,member_casual
-			,DATEDIFF(mi,started_at,ended_at) AS ride_time
-			,DATEPART(HOUR, started_at) AS hour_ride
-			,DATEPART(WEEKDAY, started_at) AS ride_weekday
-			,DATENAME(WEEKDAY, started_at) AS ride_weekday_name
-			,DATEPART(MONTH, started_at) AS month
-			,DATENAME(MONTH, started_at) AS month_name
-			,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN '1.Early Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN '2.Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN '3.Late Morning'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN '4.Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN '5.Late Afternoon'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN '6.Evening'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) = 00 THEN '7.Night'
-				  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN '0.Middle of the night'
-			 END AS 'day_part'
-			,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
-					 OR (MONTH(started_at) = 4)
-					 OR (MONTH(started_at) = 5)
-					 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 'Spring'
-				  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 7)
-					 OR (MONTH(started_at) = 8)
-					 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 'Summer'
-				  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
-					 OR (MONTH(started_at) = 10)
-					 OR (MONTH(started_at) = 11)
-					 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 'Fall'
-				  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
-					 OR (MONTH(started_at) = 1)
-					 OR (MONTH(started_at) = 2)
-					 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 'Winter'
-			 END AS 'season'
-			,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
-	 			  WHEN ended_at < started_at THEN 2
-				  WHEN start_station_name LIKE '%test%' 
-	 				OR start_station_name LIKE '%CHECK%' 
-	 				OR end_station_name LIKE '%test%' 
-	 				OR end_station_name LIKE '%CHECK%' THEN 3
-	 			  ELSE 0 
-	 		  END AS 'no_ride'
-			 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
-	FROM trips202106
-	)
-	SELECT *
-	INTO trips
-	FROM CTE
+
+		WITH CTE AS
+		(
+		SELECT	 ride_id
+		,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+			  ELSE 'electric_bike'
+		 END AS bike_type
+		,started_at
+		,ended_at
+		,start_station_name
+		,start_station_id
+		,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
+		,start_lat
+		,start_lng
+		,end_station_name
+		,end_station_id
+		,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
+		,end_lat
+		,end_lng
+		,member_casual
+		,DATEDIFF(mi,started_at,ended_at) AS ride_time
+		,DATEPART(HOUR, started_at) AS hour_ride
+		,DATEPART(WEEKDAY, started_at) AS ride_weekday
+		,DATEPART(MONTH, started_at) AS month
+		,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN 1
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN 2
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN 3
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN 4
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN 5
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN 6
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN 7
+			  WHEN DATEPART(HOUR, started_at) = 00 THEN 7
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN 0
+		 END AS 'day_part'
+		,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
+				 OR (MONTH(started_at) = 4)
+				 OR (MONTH(started_at) = 5)
+				 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 1
+			  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 7)
+				 OR (MONTH(started_at) = 8)
+				 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 2
+			  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
+				 OR (MONTH(started_at) = 10)
+				 OR (MONTH(started_at) = 11)
+				 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 3
+			  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 1)
+				 OR (MONTH(started_at) = 2)
+				 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 4
+		 END AS 'season'
+		,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
+ 			  WHEN ended_at < started_at THEN 2
+			  WHEN start_station_name LIKE '%test%' 
+ 				OR start_station_name LIKE '%CHECK%' 
+ 				OR end_station_name LIKE '%test%' 
+ 				OR end_station_name LIKE '%CHECK%' THEN 3
+ 			  ELSE 0 
+ 		  END AS 'no_ride'
+		 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
+		FROM trips202007
+		UNION ALL
+		SELECT	 ride_id
+		,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+			  ELSE 'electric_bike'
+		 END AS bike_type
+		,started_at
+		,ended_at
+		,start_station_name
+		,start_station_id
+		,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
+		,start_lat
+		,start_lng
+		,end_station_name
+		,end_station_id
+		,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
+		,end_lat
+		,end_lng
+		,member_casual
+		,DATEDIFF(mi,started_at,ended_at) AS ride_time
+		,DATEPART(HOUR, started_at) AS hour_ride
+		,DATEPART(WEEKDAY, started_at) AS ride_weekday
+		,DATEPART(MONTH, started_at) AS month
+		,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN 1
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN 2
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN 3
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN 4
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN 5
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN 6
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN 7
+			  WHEN DATEPART(HOUR, started_at) = 00 THEN 7
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN 0
+		 END AS 'day_part'
+		,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
+				 OR (MONTH(started_at) = 4)
+				 OR (MONTH(started_at) = 5)
+				 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 1
+			  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 7)
+				 OR (MONTH(started_at) = 8)
+				 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 2
+			  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
+				 OR (MONTH(started_at) = 10)
+				 OR (MONTH(started_at) = 11)
+				 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 3
+			  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 1)
+				 OR (MONTH(started_at) = 2)
+				 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 4
+		 END AS 'season'
+		,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
+ 			  WHEN ended_at < started_at THEN 2
+			  WHEN start_station_name LIKE '%test%' 
+ 				OR start_station_name LIKE '%CHECK%' 
+ 				OR end_station_name LIKE '%test%' 
+ 				OR end_station_name LIKE '%CHECK%' THEN 3
+ 			  ELSE 0 
+ 		  END AS 'no_ride'
+		 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
+		FROM trips202008
+		UNION ALL
+		SELECT	 ride_id
+		,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+			  ELSE 'electric_bike'
+		 END AS bike_type
+		,started_at
+		,ended_at
+		,start_station_name
+		,start_station_id
+		,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
+		,start_lat
+		,start_lng
+		,end_station_name
+		,end_station_id
+		,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
+		,end_lat
+		,end_lng
+		,member_casual
+		,DATEDIFF(mi,started_at,ended_at) AS ride_time
+		,DATEPART(HOUR, started_at) AS hour_ride
+		,DATEPART(WEEKDAY, started_at) AS ride_weekday
+		,DATEPART(MONTH, started_at) AS month
+		,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN 1
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN 2
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN 3
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN 4
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN 5
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN 6
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN 7
+			  WHEN DATEPART(HOUR, started_at) = 00 THEN 7
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN 0
+		 END AS 'day_part'
+		,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
+				 OR (MONTH(started_at) = 4)
+				 OR (MONTH(started_at) = 5)
+				 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 1
+			  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 7)
+				 OR (MONTH(started_at) = 8)
+				 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 2
+			  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
+				 OR (MONTH(started_at) = 10)
+				 OR (MONTH(started_at) = 11)
+				 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 3
+			  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 1)
+				 OR (MONTH(started_at) = 2)
+				 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 4
+		 END AS 'season'
+		,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
+ 			  WHEN ended_at < started_at THEN 2
+			  WHEN start_station_name LIKE '%test%' 
+ 				OR start_station_name LIKE '%CHECK%' 
+ 				OR end_station_name LIKE '%test%' 
+ 				OR end_station_name LIKE '%CHECK%' THEN 3
+ 			  ELSE 0 
+ 		  END AS 'no_ride'
+		 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
+		FROM trips202009
+		UNION ALL
+		SELECT	 ride_id
+		,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+			  ELSE 'electric_bike'
+		 END AS bike_type
+		,started_at
+		,ended_at
+		,start_station_name
+		,start_station_id
+		,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
+		,start_lat
+		,start_lng
+		,end_station_name
+		,end_station_id
+		,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
+		,end_lat
+		,end_lng
+		,member_casual
+		,DATEDIFF(mi,started_at,ended_at) AS ride_time
+		,DATEPART(HOUR, started_at) AS hour_ride
+		,DATEPART(WEEKDAY, started_at) AS ride_weekday
+		,DATEPART(MONTH, started_at) AS month
+		,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN 1
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN 2
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN 3
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN 4
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN 5
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN 6
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN 7
+			  WHEN DATEPART(HOUR, started_at) = 00 THEN 7
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN 0
+		 END AS 'day_part'
+		,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
+				 OR (MONTH(started_at) = 4)
+				 OR (MONTH(started_at) = 5)
+				 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 1
+			  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 7)
+				 OR (MONTH(started_at) = 8)
+				 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 2
+			  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
+				 OR (MONTH(started_at) = 10)
+				 OR (MONTH(started_at) = 11)
+				 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 3
+			  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 1)
+				 OR (MONTH(started_at) = 2)
+				 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 4
+		 END AS 'season'
+		,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
+ 			  WHEN ended_at < started_at THEN 2
+			  WHEN start_station_name LIKE '%test%' 
+ 				OR start_station_name LIKE '%CHECK%' 
+ 				OR end_station_name LIKE '%test%' 
+ 				OR end_station_name LIKE '%CHECK%' THEN 3
+ 			  ELSE 0 
+ 		  END AS 'no_ride'
+		 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
+		FROM trips202010
+		UNION ALL
+		SELECT	 ride_id
+		,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+			  ELSE 'electric_bike'
+		 END AS bike_type
+		,started_at
+		,ended_at
+		,start_station_name
+		,start_station_id
+		,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
+		,start_lat
+		,start_lng
+		,end_station_name
+		,end_station_id
+		,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
+		,end_lat
+		,end_lng
+		,member_casual
+		,DATEDIFF(mi,started_at,ended_at) AS ride_time
+		,DATEPART(HOUR, started_at) AS hour_ride
+		,DATEPART(WEEKDAY, started_at) AS ride_weekday
+		,DATEPART(MONTH, started_at) AS month
+		,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN 1
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN 2
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN 3
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN 4
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN 5
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN 6
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN 7
+			  WHEN DATEPART(HOUR, started_at) = 00 THEN 7
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN 0
+		 END AS 'day_part'
+		,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
+				 OR (MONTH(started_at) = 4)
+				 OR (MONTH(started_at) = 5)
+				 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 1
+			  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 7)
+				 OR (MONTH(started_at) = 8)
+				 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 2
+			  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
+				 OR (MONTH(started_at) = 10)
+				 OR (MONTH(started_at) = 11)
+				 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 3
+			  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 1)
+				 OR (MONTH(started_at) = 2)
+				 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 4
+		 END AS 'season'
+		,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
+ 			  WHEN ended_at < started_at THEN 2
+			  WHEN start_station_name LIKE '%test%' 
+ 				OR start_station_name LIKE '%CHECK%' 
+ 				OR end_station_name LIKE '%test%' 
+ 				OR end_station_name LIKE '%CHECK%' THEN 3
+ 			  ELSE 0 
+ 		  END AS 'no_ride'
+		 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
+		FROM trips202011
+		UNION ALL
+		SELECT	 ride_id
+		,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+			  ELSE 'electric_bike'
+		 END AS bike_type
+		,started_at
+		,ended_at
+		,start_station_name
+		,start_station_id
+		,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
+		,start_lat
+		,start_lng
+		,end_station_name
+		,end_station_id
+		,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
+		,end_lat
+		,end_lng
+		,member_casual
+		,DATEDIFF(mi,started_at,ended_at) AS ride_time
+		,DATEPART(HOUR, started_at) AS hour_ride
+		,DATEPART(WEEKDAY, started_at) AS ride_weekday
+		,DATEPART(MONTH, started_at) AS month
+		,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN 1
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN 2
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN 3
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN 4
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN 5
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN 6
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN 7
+			  WHEN DATEPART(HOUR, started_at) = 00 THEN 7
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN 0
+		 END AS 'day_part'
+		,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
+				 OR (MONTH(started_at) = 4)
+				 OR (MONTH(started_at) = 5)
+				 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 1
+			  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 7)
+				 OR (MONTH(started_at) = 8)
+				 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 2
+			  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
+				 OR (MONTH(started_at) = 10)
+				 OR (MONTH(started_at) = 11)
+				 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 3
+			  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 1)
+				 OR (MONTH(started_at) = 2)
+				 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 4
+		 END AS 'season'
+		,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
+ 			  WHEN ended_at < started_at THEN 2
+			  WHEN start_station_name LIKE '%test%' 
+ 				OR start_station_name LIKE '%CHECK%' 
+ 				OR end_station_name LIKE '%test%' 
+ 				OR end_station_name LIKE '%CHECK%' THEN 3
+ 			  ELSE 0 
+ 		  END AS 'no_ride'
+		 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
+		FROM trips202012
+		UNION ALL
+		SELECT	 ride_id
+		,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+			  ELSE 'electric_bike'
+		 END AS bike_type
+		,started_at
+		,ended_at
+		,start_station_name
+		,start_station_id
+		,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
+		,start_lat
+		,start_lng
+		,end_station_name
+		,end_station_id
+		,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
+		,end_lat
+		,end_lng
+		,member_casual
+		,DATEDIFF(mi,started_at,ended_at) AS ride_time
+		,DATEPART(HOUR, started_at) AS hour_ride
+		,DATEPART(WEEKDAY, started_at) AS ride_weekday
+		,DATEPART(MONTH, started_at) AS month
+		,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN 1
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN 2
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN 3
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN 4
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN 5
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN 6
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN 7
+			  WHEN DATEPART(HOUR, started_at) = 00 THEN 7
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN 0
+		 END AS 'day_part'
+		,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
+				 OR (MONTH(started_at) = 4)
+				 OR (MONTH(started_at) = 5)
+				 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 1
+			  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 7)
+				 OR (MONTH(started_at) = 8)
+				 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 2
+			  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
+				 OR (MONTH(started_at) = 10)
+				 OR (MONTH(started_at) = 11)
+				 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 3
+			  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 1)
+				 OR (MONTH(started_at) = 2)
+				 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 4
+		 END AS 'season'
+		,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
+ 			  WHEN ended_at < started_at THEN 2
+			  WHEN start_station_name LIKE '%test%' 
+ 				OR start_station_name LIKE '%CHECK%' 
+ 				OR end_station_name LIKE '%test%' 
+ 				OR end_station_name LIKE '%CHECK%' THEN 3
+ 			  ELSE 0 
+ 		  END AS 'no_ride'
+		 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
+		FROM trips202101
+		UNION ALL
+		SELECT	 ride_id
+		,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+			  ELSE 'electric_bike'
+		 END AS bike_type
+		,started_at
+		,ended_at
+		,start_station_name
+		,start_station_id
+		,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
+		,start_lat
+		,start_lng
+		,end_station_name
+		,end_station_id
+		,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
+		,end_lat
+		,end_lng
+		,member_casual
+		,DATEDIFF(mi,started_at,ended_at) AS ride_time
+		,DATEPART(HOUR, started_at) AS hour_ride
+		,DATEPART(WEEKDAY, started_at) AS ride_weekday
+		,DATEPART(MONTH, started_at) AS month
+		,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN 1
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN 2
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN 3
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN 4
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN 5
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN 6
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN 7
+			  WHEN DATEPART(HOUR, started_at) = 00 THEN 7
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN 0
+		 END AS 'day_part'
+		,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
+				 OR (MONTH(started_at) = 4)
+				 OR (MONTH(started_at) = 5)
+				 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 1
+			  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 7)
+				 OR (MONTH(started_at) = 8)
+				 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 2
+			  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
+				 OR (MONTH(started_at) = 10)
+				 OR (MONTH(started_at) = 11)
+				 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 3
+			  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 1)
+				 OR (MONTH(started_at) = 2)
+				 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 4
+		 END AS 'season'
+		,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
+ 			  WHEN ended_at < started_at THEN 2
+			  WHEN start_station_name LIKE '%test%' 
+ 				OR start_station_name LIKE '%CHECK%' 
+ 				OR end_station_name LIKE '%test%' 
+ 				OR end_station_name LIKE '%CHECK%' THEN 3
+ 			  ELSE 0 
+ 		  END AS 'no_ride'
+		 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
+		FROM trips202102
+		UNION ALL
+		SELECT	 ride_id
+		,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+			  ELSE 'electric_bike'
+		 END AS bike_type
+		,started_at
+		,ended_at
+		,start_station_name
+		,start_station_id
+		,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
+		,start_lat
+		,start_lng
+		,end_station_name
+		,end_station_id
+		,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
+		,end_lat
+		,end_lng
+		,member_casual
+		,DATEDIFF(mi,started_at,ended_at) AS ride_time
+		,DATEPART(HOUR, started_at) AS hour_ride
+		,DATEPART(WEEKDAY, started_at) AS ride_weekday
+		,DATEPART(MONTH, started_at) AS month
+		,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN 1
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN 2
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN 3
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN 4
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN 5
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN 6
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN 7
+			  WHEN DATEPART(HOUR, started_at) = 00 THEN 7
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN 0
+		 END AS 'day_part'
+		,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
+				 OR (MONTH(started_at) = 4)
+				 OR (MONTH(started_at) = 5)
+				 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 1
+			  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 7)
+				 OR (MONTH(started_at) = 8)
+				 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 2
+			  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
+				 OR (MONTH(started_at) = 10)
+				 OR (MONTH(started_at) = 11)
+				 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 3
+			  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 1)
+				 OR (MONTH(started_at) = 2)
+				 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 4
+		 END AS 'season'
+		,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
+ 			  WHEN ended_at < started_at THEN 2
+			  WHEN start_station_name LIKE '%test%' 
+ 				OR start_station_name LIKE '%CHECK%' 
+ 				OR end_station_name LIKE '%test%' 
+ 				OR end_station_name LIKE '%CHECK%' THEN 3
+ 			  ELSE 0 
+ 		  END AS 'no_ride'
+		 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
+		FROM trips202103
+		UNION ALL
+		SELECT	 ride_id
+		,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+			  ELSE 'electric_bike'
+		 END AS bike_type
+		,started_at
+		,ended_at
+		,start_station_name
+		,start_station_id
+		,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
+		,start_lat
+		,start_lng
+		,end_station_name
+		,end_station_id
+		,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
+		,end_lat
+		,end_lng
+		,member_casual
+		,DATEDIFF(mi,started_at,ended_at) AS ride_time
+		,DATEPART(HOUR, started_at) AS hour_ride
+		,DATEPART(WEEKDAY, started_at) AS ride_weekday
+		,DATEPART(MONTH, started_at) AS month
+		,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN 1
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN 2
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN 3
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN 4
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN 5
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN 6
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN 7
+			  WHEN DATEPART(HOUR, started_at) = 00 THEN 7
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN 0
+		 END AS 'day_part'
+		,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
+				 OR (MONTH(started_at) = 4)
+				 OR (MONTH(started_at) = 5)
+				 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 1
+			  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 7)
+				 OR (MONTH(started_at) = 8)
+				 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 2
+			  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
+				 OR (MONTH(started_at) = 10)
+				 OR (MONTH(started_at) = 11)
+				 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 3
+			  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 1)
+				 OR (MONTH(started_at) = 2)
+				 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 4
+		 END AS 'season'
+		,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
+ 			  WHEN ended_at < started_at THEN 2
+			  WHEN start_station_name LIKE '%test%' 
+ 				OR start_station_name LIKE '%CHECK%' 
+ 				OR end_station_name LIKE '%test%' 
+ 				OR end_station_name LIKE '%CHECK%' THEN 3
+ 			  ELSE 0 
+ 		  END AS 'no_ride'
+		 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
+		FROM trips202104
+		UNION ALL
+		SELECT	 ride_id
+		,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+			  ELSE 'electric_bike'
+		 END AS bike_type
+		,started_at
+		,ended_at
+		,start_station_name
+		,start_station_id
+		,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
+		,start_lat
+		,start_lng
+		,end_station_name
+		,end_station_id
+		,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
+		,end_lat
+		,end_lng
+		,member_casual
+		,DATEDIFF(mi,started_at,ended_at) AS ride_time
+		,DATEPART(HOUR, started_at) AS hour_ride
+		,DATEPART(WEEKDAY, started_at) AS ride_weekday
+		,DATEPART(MONTH, started_at) AS month
+		,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN 1
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN 2
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN 3
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN 4
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN 5
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN 6
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN 7
+			  WHEN DATEPART(HOUR, started_at) = 00 THEN 7
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN 0
+		 END AS 'day_part'
+		,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
+				 OR (MONTH(started_at) = 4)
+				 OR (MONTH(started_at) = 5)
+				 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 1
+			  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 7)
+				 OR (MONTH(started_at) = 8)
+				 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 2
+			  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
+				 OR (MONTH(started_at) = 10)
+				 OR (MONTH(started_at) = 11)
+				 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 3
+			  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 1)
+				 OR (MONTH(started_at) = 2)
+				 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 4
+		 END AS 'season'
+		,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
+ 			  WHEN ended_at < started_at THEN 2
+			  WHEN start_station_name LIKE '%test%' 
+ 				OR start_station_name LIKE '%CHECK%' 
+ 				OR end_station_name LIKE '%test%' 
+ 				OR end_station_name LIKE '%CHECK%' THEN 3
+ 			  ELSE 0 
+ 		  END AS 'no_ride'
+		 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
+		FROM trips202105
+		UNION ALL
+		SELECT	 ride_id
+		,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
+			  ELSE 'electric_bike'
+		 END AS bike_type
+		,started_at
+		,ended_at
+		,start_station_name
+		,start_station_id
+		,LEFT(start_lat, 6) + ',' + LEFT(start_lng, 7) AS start_lat_lng
+		,start_lat
+		,start_lng
+		,end_station_name
+		,end_station_id
+		,LEFT(end_lat, 6) + ',' + LEFT(end_lng, 7) AS end_lat_lng
+		,end_lat
+		,end_lng
+		,member_casual
+		,DATEDIFF(mi,started_at,ended_at) AS ride_time
+		,DATEPART(HOUR, started_at) AS hour_ride
+		,DATEPART(WEEKDAY, started_at) AS ride_weekday
+		,DATEPART(MONTH, started_at) AS month
+		,CASE WHEN DATEPART(HOUR, started_at) BETWEEN 5 AND 6 THEN 1
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 7 AND 9 THEN 2
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 10 AND 11 THEN 3
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 12 AND 15 THEN 4
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 16 AND 17 THEN 5
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 18 AND 20 THEN 6
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 21 AND 23 THEN 7
+			  WHEN DATEPART(HOUR, started_at) = 00 THEN 7
+			  WHEN DATEPART(HOUR, started_at) BETWEEN 1 AND 4 THEN 0
+		 END AS 'day_part'
+		,CASE WHEN (MONTH(started_at) = 3 AND DAY(started_at) >= 20)
+				 OR (MONTH(started_at) = 4)
+				 OR (MONTH(started_at) = 5)
+				 OR (MONTH(started_at) = 6 AND DAY(started_at) <= 20) THEN 1
+			  WHEN (MONTH(started_at) = 6 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 7)
+				 OR (MONTH(started_at) = 8)
+				 OR (MONTH(started_at) = 9 AND DAY(started_at) <= 21) THEN 2
+			  WHEN (MONTH(started_at) = 9 AND DAY(started_at) >= 22)
+				 OR (MONTH(started_at) = 10)
+				 OR (MONTH(started_at) = 11)
+				 OR (MONTH(started_at) = 12 AND DAY(started_at) <= 20) THEN 3
+			  WHEN  (MONTH(started_at) = 12 AND DAY(started_at) >= 21)
+				 OR (MONTH(started_at) = 1)
+				 OR (MONTH(started_at) = 2)
+				 OR (MONTH(started_at) = 3 AND DAY(started_at) <= 19) THEN 4
+		 END AS 'season'
+		,CASE WHEN start_station_id = end_station_id AND DATEDIFF(mi,started_at,ended_at) <= 0 THEN 1
+ 			  WHEN ended_at < started_at THEN 2
+			  WHEN start_station_name LIKE '%test%' 
+ 				OR start_station_name LIKE '%CHECK%' 
+ 				OR end_station_name LIKE '%test%' 
+ 				OR end_station_name LIKE '%CHECK%' THEN 3
+ 			  ELSE 0 
+ 		  END AS 'no_ride'
+		 ,DATEDIFF(dy,started_at,ended_at) AS same_day_ride
+		FROM trips202106
+		)
+		SELECT *
+		INTO trips
+		FROM CTE
 			
 	
 ## Some Numbers - number of riders and average ride time
