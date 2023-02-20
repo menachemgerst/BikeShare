@@ -1141,28 +1141,20 @@ day_part lookup table
 	
 8. seasons
 	
-		WITH CTE AS
-		(
-			SELECT *
-				,CASE WHEN season = 'spring' THEN 1
-				      WHEN season = 'summer' THEN 2
-				      WHEN season = 'fall' THEN 3
-				      WHEN season = 'winter' THEN 4
-			END AS 'season_n'
-			FROM trips
-			WHERE no_ride = 0
-		)
-		SELECT	 season
+		SELECT	 s.season_name
+			,s.dates
 			,COUNT(*) AS total_day
 			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
-		FROM CTE
-		GROUP BY  season_n
-			 ,season
-		ORDER BY  season_n
-			 ,season
+		FROM trips t
+		JOIN seasons s
+		ON t.season = s.season
+		GROUP BY t.season
+				,s.season_name
+				,s.dates
+		ORDER BY  t.season
 				
 	
-	![image](https://user-images.githubusercontent.com/73856609/209867895-74b29f01-5928-4448-9c3c-7315946250b1.png)
+	![image](https://user-images.githubusercontent.com/73856609/220190948-04c60941-57e9-4b17-9786-842998cbbfb8.png)
 
 	
 10. part of the day
