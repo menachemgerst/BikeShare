@@ -1167,29 +1167,17 @@ day_part lookup table
 	
 10. part of the day
 
-		WITH CTE AS
-		(
-			SELECT *
-				,CASE WHEN day_part = '0.Middle of the night' THEN '01:00-04:59'
-			  		WHEN day_part = '1.Early Morning' THEN '05:00-06:59'
-			  		WHEN day_part = '2.Morning' THEN '07:00-09:59'
-			  		WHEN day_part = '3.Late Morning' THEN '10:00-11:59'
-			  		WHEN day_part = '4.Afternoon' THEN '12:00-15:59'
-			  		WHEN day_part = '5.Late Afternoon' THEN '16:00-17:59'
-			  		WHEN day_part = '6.Evening' THEN '18:00-20:59'
-			  		WHEN day_part = '7.Night' THEN '21:00-00:59'
-		 		END AS 'day_part_h'
-			FROM trips
-			WHERE no_ride = 0
-		)
-		SELECT	 day_part
-			,day_part_h
+		SELECT	 d.day_part_name
+			,d.hours
 			,COUNT(*) AS total_day
 			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
-		FROM CTE
-		GROUP BY day_part
-			,day_part_h
-		ORDER BY day_part
+		FROM trips t
+		JOIN day_part d
+		ON t.day_part = d.day_part
+		GROUP BY t.day_part
+				,d.day_part_name
+			    ,d.hours
+		ORDER BY t.day_part
 
 	![image](https://user-images.githubusercontent.com/73856609/209868175-fe0a5a50-d2bb-4b14-9b79-e15da2b3f7ff.png)
 
