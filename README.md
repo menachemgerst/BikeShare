@@ -2021,11 +2021,11 @@ In this analysis we defined the characteristics of the two types of membership r
 -	Weekend packages. A reduced prices for a  weekend long pass with the goal of converting the weekend users into weekday users.
 
 
+#### Casual suburbs targeting
+
+The casual riders not in the prime tourist locations don't have one clear thread, they probably use the bikes for an occasional need (demographic information about the users was not in the data). Focusing on this random group of users "from the suburbs" by advertising the benefits of the annual membership to increase there conversion of membership type
 
 
-the next steps of the analysis will include ride disstance by KM/MI, station clusters and near by sites to the stations. a
 
 
-### Near the Stations
-
-### Ride Disstance
+### further analysis will be added as soon as possible 
