@@ -1124,16 +1124,18 @@ day_part lookup table
 		
 7. month
 	
-		SELECT	 month_name
-			,COUNT(*) AS total_day
-			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
-		FROM trips
-		WHERE no_ride = 0
-		GROUP BY  month
-		 	 ,month_name
-		ORDER BY  month
-		 	 ,month_name
-			 
+		 SELECT	 m.month_name
+ 			,COUNT(*) AS total_day
+ 			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
+		 FROM trips t
+		 JOIN months m
+		 ON t.month = m.month
+		 WHERE no_ride = 0
+		 GROUP BY  t.month
+		  	  ,m.month_name
+		 ORDER BY t.month
+		  	 ,m.month_name
+					 
 	![image](https://user-images.githubusercontent.com/73856609/209867672-e4ab3cb9-6e84-4fcf-a61c-e1d5b0d43d00.png)
 
 	
