@@ -2016,9 +2016,9 @@ In this analysis we defined the characteristics of the two types of membership r
 -	3-4 day/Weeklong packages for tourists. 
 	This package will give the tourist a weekly pass with a reduced price for the usage by minute. 
 	The benefit of this package is a way to explore the city without having to consider the price of a few "one time using" of the bike. 
-	This package also will give the visitor a unique experience of the city ride through the streets  
--	Seasonal packages for the spring and summer. This package will give the casual rider the opportunity to enjoy the city during the nice spring and hot summer with out the need to think twice about a nice afternoon at the park or a day of site seeing the great city.
--	Weekend packages reduced prices for the weekends converting the weekend users into weekday users.
+	This package also will give the visitor a unique experience of the city ride through the streets.  
+-	Seasonal packages for the spring and/or summer. This package will give the casual rider the opportunity to enjoy the city during the nice weather in spring and summer without the need to think twice about a nice afternoon at the park or a day of site seeing in the great city.
+-	Weekend packages. A reduced prices for a  weekend long pass with the goal of converting the weekend users into weekday users.
 
 
 
