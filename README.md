@@ -3,6 +3,12 @@
 # Executive Summary
 This analysis was done for the business and marketing division in the company in order to identify ways to convert casual riders to annual riders. The analysis focuses on the characteristics of the casual users vs. the annual users showing that casual users ride the bikes mostly for leisure during the spring, summer on weekends and at prime tourist locations in the city. Annual users ride the bikes for regular day to day needs, ride all year round, ride mostly on weekdays and during the work day hours (not including around noon) and when they ride on the weekends or during the summer vacation the popular locations are similar to the casual rides and in touristy locations.
 
+They data analysis team recommendations are to focus on two methods, 
+
+First method – special annual packages for short time periods (weeklong, seasonal) to convert casual users to short time annual members (leading to them returning to using the package the flowing season or visit)
+
+Second method – advertise in the suburbs targeting the casual riders that may not use the bikes as frequently as the annual riders but also don't have the same characteristics as the average casual riders. 
+
 
 ## Introduction 
 ### About
