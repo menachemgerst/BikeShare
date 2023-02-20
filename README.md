@@ -1086,34 +1086,38 @@ day_part lookup table
 6. days of the week
 	
 	
-		SELECT	 ride_weekday_name
-			,COUNT(*) AS total_day
-			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
-		FROM trips
-		WHERE no_ride = 0
-		GROUP BY ride_weekday
-			,ride_weekday_name
-		ORDER BY ride_weekday
-			,ride_weekday_name
+		 SELECT	 w.weekday_name
+ 			,COUNT(*) AS total_day
+ 			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
+		 FROM trips t
+		 JOIN weekdays w
+		 ON t.ride_weekday = w.weekday
+		 WHERE no_ride = 0
+		 GROUP BY t.ride_weekday
+			,w.weekday_name
+		 ORDER BY t.ride_weekday
+			,w.weekday_name
 			
 	![image](https://user-images.githubusercontent.com/73856609/209867534-ea6ee5ab-9386-4a94-9b5b-713d195f01fe.png)
 		
 		
 		SELECT	 member_casual
-			,ride_weekday_name
+			,w.weekday_name
 			,COUNT(*) AS total_day
 			,AVG(ride_time) AS 'avg'
 			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
-			,FORMAT(COUNT(*) * 1.0 / SUM(COUNT(*)) OVER (PARTITION BY member_casual), 'P') AS 'pct_from_membership'
-			,FORMAT(COUNT(*) * 1.0 / SUM(COUNT(*)) OVER (PARTITION BY ride_weekday), 'P') AS 'pct_from_ride_weekday'
-		FROM trips
+			,FORMAT(COUNT(*) * 1.0 / SUM(COUNT(*)) OVER (PARTITION BY t.member_casual), 'P') AS 'pct_from_membership'
+			,FORMAT(COUNT(*) * 1.0 / SUM(COUNT(*)) OVER (PARTITION BY t.ride_weekday), 'P') AS 'pct_from_ride_weekday'
+		FROM trips t
+		JOIN weekdays w
+		ON t.ride_weekday = w.weekday
 		WHERE no_ride = 0
-		GROUP BY member_casual
-			,ride_weekday
-			,ride_weekday_name
-		ORDER BY member_casual
-			,ride_weekday
-			,ride_weekday_name
+		GROUP BY t.member_casual
+			,t.ride_weekday
+			,w.weekday_name
+		ORDER BY t.member_casual
+			,t.ride_weekday
+			,w.weekday_name
 		
 	![image](https://user-images.githubusercontent.com/73856609/210068262-2c0d74bf-b267-483b-b700-787676c400f4.png)
 
