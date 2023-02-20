@@ -924,6 +924,91 @@ using UNION ALL for each one of the twelve tables and creating all the indicator
 		SELECT *
 		INTO trips
 		FROM CTE
+		
+		
+Creating lookup tables
+
+
+- weekdays lookup table
+
+		CREATE TABLE weekdays
+		(
+		weekday INT
+		,weekday_name NVARCHAR(10)
+		)
+		
+		INSERT INTO weekdays (weekday, weekday_name) VALUES (1, 'Sunday')
+		INSERT INTO weekdays (weekday, weekday_name) VALUES (2, 'Monday')
+		INSERT INTO weekdays (weekday, weekday_name) VALUES (3, 'Tuesday')
+		INSERT INTO weekdays (weekday, weekday_name) VALUES (4, 'Wednesday')
+		INSERT INTO weekdays (weekday, weekday_name) VALUES (5, 'Thursday')
+		INSERT INTO weekdays (weekday, weekday_name) VALUES (6, 'Friday')
+		INSERT INTO weekdays (weekday, weekday_name) VALUES (7, 'Saturday')
+		
+		SELECT * FROM weekdays
+
+
+- months lookup table
+
+		CREATE TABLE months
+		(
+		month INT
+		,month_name NVARCHAR(10)
+		)
+		
+		
+		INSERT INTO months (month, month_name) VALUES (1  ,'January')
+		INSERT INTO months (month, month_name) VALUES (2  ,'February')
+		INSERT INTO months (month, month_name) VALUES (3  ,'March')
+		INSERT INTO months (month, month_name) VALUES (4  ,'April')
+		INSERT INTO months (month, month_name) VALUES (5  ,'May')
+		INSERT INTO months (month, month_name) VALUES (6  ,'June')
+		INSERT INTO months (month, month_name) VALUES (7  ,'July')
+		INSERT INTO months (month, month_name) VALUES (8  ,'August')
+		INSERT INTO months (month, month_name) VALUES (9  ,'September')
+		INSERT INTO months (month, month_name) VALUES (10 ,'October')
+		INSERT INTO months (month, month_name) VALUES (11 ,'November')
+		INSERT INTO months (month, month_name) VALUES (12 ,'December')
+		
+		SELECT * FROM months
+		
+
+day_part lookup table
+
+		CREATE TABLE day_part
+		(
+		day_part INT
+		,day_part_name NVARCHAR(25)
+		,hours NVARCHAR(50)
+		)
+		
+		INSERT INTO day_part (day_part, day_part_name,hours) VALUES (1, 'Early Morning', '05:00-6:59')
+		INSERT INTO day_part (day_part, day_part_name,hours) VALUES (2, 'Morning','07:00-9:59')
+		INSERT INTO day_part (day_part, day_part_name,hours) VALUES (3, 'Late Morning', '10:00-11:59')
+		INSERT INTO day_part (day_part, day_part_name,hours) VALUES (4, 'Afternoon','12:00-15:59')
+		INSERT INTO day_part (day_part, day_part_name,hours) VALUES (5, 'Late Afternoon','16:00-17:59')
+		INSERT INTO day_part (day_part, day_part_name,hours) VALUES (6, 'Evening','18:00-20:59')
+		INSERT INTO day_part (day_part, day_part_name,hours) VALUES (7, 'Night','21:00-00:59')
+		INSERT INTO day_part (day_part, day_part_name,hours) VALUES (0, 'Middle of the night','01:00-04:59')
+		
+		SELECT * FROM day_part
+		
+- seasons lookup table
+
+		CREATE TABLE seasons
+		(
+		season INT
+		,season_name NVARCHAR(50)
+		,dates NVARCHAR(50)
+		)
+		
+		INSERT INTO seasons (season, season_name, dates) VALUES (1,'Spring','March 20th - June 20th')
+		INSERT INTO seasons (season, season_name, dates) VALUES (2,'Summer','June 21st - September 21st')
+		INSERT INTO seasons (season, season_name, dates) VALUES (3,'Fall','September 22nd - December 20th')
+		INSERT INTO seasons (season, season_name, dates) VALUES (4,'Winter','December 21st - March 19t')
+		
+		SELECT * FROM seasons
+
 			
 	
 ## Some Numbers - number of riders and average ride time
