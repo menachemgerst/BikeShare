@@ -1181,7 +1181,7 @@ over 12 month 4,460,151 rides were recorded, 38,383 are not in the analysis (tes
 - annual riders ride an average of 15 minutes to an average of 40 minutes by casual riders
 - riders (both annual and casual riders) prefer the regualr bike (75%) over the electric bikes (25%)
 - casual riders ride more on weekends  - 57% of casual rides are on Fri-Sun. 
-- annual riders ride a little bit more on weekends but not significantly
+- annual riders ride a little bit more on weekdays but not significantly
 - when it's cold the number of rides drop - 73% of the rides or in the spring and summer
 - the number of casual riders drops in the winter, only 25% of the rides in the winter are by casual riders
 - between 10:00 and 21:00 the casual and annual riders use the bikes the same. members ride more in the earler morning hours (05:00 - 10:00, 70% + of the rides), and casual riders like the late hours more (21:00-05:00, 60% +/- of the rides)
