@@ -1053,19 +1053,11 @@ day_part lookup table
 4. total rides by bike type
 	
 		
-		WITH  CTE AS
-		(
-			SELECT	 *
-			,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
-			      ELSE 'electric_bike'
-		 	 END AS bike_type
-			 FROM trips
-			 WHERE no_ride = 0
-		)
 		SELECT 	 bike_type
 			,COUNT(*) AS rider_type
 			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS pct
-		FROM CTE
+		 FROM trips
+		 WHERE no_ride = 0
 		GROUP BY bike_type
 		
 		
@@ -1074,26 +1066,18 @@ day_part lookup table
 	
 5. total rides by membership and bike type
 	
-		WITH  CTE AS
-		(
-			SELECT	 *
-				,CASE WHEN rideable_type IN ('classic_bike','docked_bike') THEN 'regular_bike' 
-				      ELSE 'electric_bike'
-				 END AS bike_type
-			FROM trips
-			WHERE no_ride = 0
-		)
-		SELECT	member_casual
-			,bike_type
-			,COUNT(*) AS 'rider_type'
-			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS 'pctfrom_total'
-			,FORMAT(COUNT(*) * 1.0 / SUM(COUNT(*)) OVER (PARTITION BY member_casual), 'P') AS 'pct_from_membership'
-			,FORMAT(COUNT(*) * 1.0 / SUM(COUNT(*)) OVER (PARTITION BY bike_type), 'P') AS 'pct_from_bike_type'
-		FROM CTE
+		 SELECT	member_casual
+ 			,bike_type
+ 			,COUNT(*) AS 'rider_type'
+ 			,FORMAT(COUNT(*)*1.0 / SUM(COUNT(*)) OVER (), 'P') AS 'pctfrom_total'
+ 			,FORMAT(COUNT(*) * 1.0 / SUM(COUNT(*)) OVER (PARTITION BY member_casual), 'P') AS 'pct_from_membership'
+ 			,FORMAT(COUNT(*) * 1.0 / SUM(COUNT(*)) OVER (PARTITION BY bike_type), 'P') AS 'pct_from_bike_type'
+ 		FROM trips
+ 		WHERE no_ride = 0
 		GROUP BY member_casual
-			,bike_type 
-		ORDER BY member_casual
-			,bike_type
+ 			,bike_type 
+ 		ORDER BY member_casual
+ 			,bike_type
 		
 		
 	![image](https://user-images.githubusercontent.com/73856609/209859745-4ae618bd-6b20-4832-9241-009a51791c53.png)
