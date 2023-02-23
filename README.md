@@ -12,6 +12,7 @@ Second method – advertise in the suburbs targeting the casual riders that may 
 ### Limitations 
 
 -	The data does not include any type of distinct users (via paying methods) and demographic information about the users (sex, age occupation etc.) that can shed light about the characteristics of the different users. 
+-	The year long data from July 2020 to June 2021 is parallel to covid-19 first year of lockdowns and frequent changes in travel and area restrictions and the data can be influenced by the not regular times it was recorded.
 
 
 ### Further analysis
