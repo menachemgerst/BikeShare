@@ -20,7 +20,7 @@ Second method – advertise in the suburbs targeting the casual riders that may 
 -	Calculation of ride distance, routes, and station clusters for creating location packages (using python pandas)
 -	With taking into consideration the method of creating packages a further analysis will try to include data about weather, distance from areas of interest, yearly events (Christmas, sporting events etc.) to deeply understand the characteristics of the rides.
 
-
+![image](https://user-images.githubusercontent.com/73856609/217914399-5ac9ab3f-ed03-4119-bddd-b4747533fe75.png)
 
 
 
