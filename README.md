@@ -2161,3 +2161,37 @@ adding to the table for each ride the distance in KM
 			ELSE NULL
 			END, '##.##') AS 'distanceInMiles'
 			FROM trips
+			
+
+After adding ride distance it opens the option to calculate average ride time for different groups
+
+- average ride distance by membership
+
+			WITH CTE AS
+			(
+			SELECT * 
+      				,FORMAT(CASE WHEN start_lat IS NOT NULL
+			 		AND start_lng IS NOT NULL
+			 		AND end_lat IS NOT NULL
+			 		AND end_lng IS NOT NULL THEN 
+			GEOGRAPHY::Point([start_lat], [start_lng], 4326).STDistance(GEOGRAPHY::Point([end_lat], [end_lng], 4326)) /1000
+			ELSE NULL
+			END, '##.##') AS 'distanceInKMeters'
+				,FORMAT(CASE WHEN start_lat IS NOT NULL
+			 		AND start_lng IS NOT NULL
+			 		AND end_lat IS NOT NULL
+			 		AND end_lng IS NOT NULL THEN 
+			GEOGRAPHY::Point([start_lat], [start_lng], 4326).STDistance(GEOGRAPHY::Point([end_lat], [end_lng], 4326)) /1609.344
+			ELSE NULL
+			END, '##.##') AS 'distanceInMiles'
+			FROM trips
+			)
+			SELECT  member_casual
+				,AVG(CONVERT(float, distanceInKMeters)) AS 'avg_dist'
+			FROM CTE
+			WHERE distanceInKMeters IS NOT NULL 
+			OR distanceInKMeters !=''
+			OR distanceInKMeters !=0
+			GROUP BY member_casual
+
+![image](https://user-images.githubusercontent.com/73856609/227035542-13b7d864-b112-4d51-bedb-b71e0ee6e5b1.png)
