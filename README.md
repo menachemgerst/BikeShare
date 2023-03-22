@@ -2136,5 +2136,28 @@ The casual riders not in the prime tourist locations don't have one clear thread
 ### further analysis will be added as soon as possible 
 
 
+
 # Part Two
 ## adding analysis about ride distance, routes and location clusters
+
+adding to the table for each ride the distance in KM
+
+		
+
+
+			SELECT * 
+      				,FORMAT(CASE WHEN start_lat IS NOT NULL
+			 		AND start_lng IS NOT NULL
+			 		AND end_lat IS NOT NULL
+			 		AND end_lng IS NOT NULL THEN 
+			GEOGRAPHY::Point([start_lat], [start_lng], 4326).STDistance(GEOGRAPHY::Point([end_lat], [end_lng], 4326)) /1000
+			ELSE NULL
+			END, '##.##') AS 'distanceInKMeters'
+				,FORMAT(CASE WHEN start_lat IS NOT NULL
+			 		AND start_lng IS NOT NULL
+			 		AND end_lat IS NOT NULL
+			 		AND end_lng IS NOT NULL THEN 
+			GEOGRAPHY::Point([start_lat], [start_lng], 4326).STDistance(GEOGRAPHY::Point([end_lat], [end_lng], 4326)) /1609.344
+			ELSE NULL
+			END, '##.##') AS 'distanceInMiles'
+			FROM trips
