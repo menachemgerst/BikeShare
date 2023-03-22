@@ -2134,3 +2134,7 @@ The casual riders not in the prime tourist locations don't have one clear thread
 
 
 ### further analysis will be added as soon as possible 
+
+
+# Part Two
+## adding analysis about ride distance, routes and location clusters
